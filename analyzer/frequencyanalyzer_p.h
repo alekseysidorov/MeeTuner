@@ -32,9 +32,6 @@ public:
 	{
 		buffer.append(device->readAll());
 		if (buffer.count() >= sampleSize) {
-			//QByteArray ref = buffer.left(); //black magic((
-			//int32_T *s = reinterpret_cast<int32_T*>(ref.data());
-
 			//TODO optimize me
 			int32_T s[frameSize];
 			QDataStream stream(buffer);
@@ -43,14 +40,11 @@ public:
 
 			real32_T snr;
 			creal32_T w[frameSize];
-			real32_T now;
-			measureFreqXcorr(s, sampling, &now, &snr, w);
-			buffer.clear();
+			measureFreqXcorr(s, sampling, &frequency, &snr, w);
 
-			if (qAbs(now - frequency) > 10) {
-				qDebug() << "Received full fft frame with size " << buffer.count() << ". Processing...";
-				emit q_func()->currentFrequencyChanged(frequency);
-			}
+			qDebug() << frequency << snr;
+			emit q_func()->currentFrequencyChanged(frequency);
+			buffer.clear();
 		}
 	}
 };
