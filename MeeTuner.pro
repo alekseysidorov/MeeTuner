@@ -20,16 +20,20 @@ symbian:TARGET.CAPABILITY += NetworkServices
 
 # If your application uses the Qt Mobility libraries, uncomment the following
 # lines and add the respective components to the MOBILITY variable.
-#QT += multimedia
+if(isEmpty(MEEGO_VERSION_MAJOR)) {
+	QT += multimedia
+}
 
-#CONFIG += mobility
-#MOBILITY += multimedia
+CONFIG += mobility
+MOBILITY += multimedia
 
 # Speed up launching on MeeGo/Harmattan when using applauncherd daemon
 CONFIG += qdeclarative-boostable
 
 # Add dependency to Symbian components
 # CONFIG += qt-components
+
+include(3rdparty/3rdparty.pri)
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \

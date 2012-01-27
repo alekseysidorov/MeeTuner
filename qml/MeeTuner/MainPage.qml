@@ -1,5 +1,6 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import org.meetuner 1.0
 
 Page {
 
@@ -10,7 +11,14 @@ Page {
 		Button {
 			anchors.centerIn: parent
 			text: "Click me"
-			onClicked: audioIcon.alert();
+			onClicked: {
+				audioIcon.alert();
+				analyzer.start();
+			}
+		}
+
+		Analyzer {
+			id: analyzer
 		}
 	}
 

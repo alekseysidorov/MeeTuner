@@ -1,33 +1,31 @@
 #include "frequencyanalyzer_p.h"
 
 FrequencyAnalyzer::FrequencyAnalyzer(QObject *parent) :
-	QObject(parent),
-	d_ptr(new FrequencyAnalyzerPrivate(this))
+    QObject(parent),
+    d_ptr(new FrequencyAnalyzerPrivate(this))
 {
-	Q_D(FrequencyAnalyzer);
+    Q_D(FrequencyAnalyzer);
 
-	QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
+    QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
 
     qDebug() << "device name: " << info.deviceName() << "\n"
              << "supported frequency:" << info.supportedFrequencies() << "\n"
              << "supported codecs" << info.supportedCodecs() << "\n"
-             << "supported sample sizes" << info.supportedSampleSizes();
+             << "supported sample sizes" << info.supportedSampleSizes() << "\n"
+             << "supported sample types" << info.supportedSampleTypes();
 
-	QAudioFormat format = info.preferredFormat();
-	format.setCodec("audio/pcm");
-	format.setByteOrder(QAudioFormat::LittleEndian);
-	format.setSampleType(QAudioFormat::SignedInt);
-    format.setFrequency(info.supportedFrequencies().last());
+    QAudioFormat format = info.preferredFormat();
+    format.setCodec("audio/pcm");
+    format.setByteOrder(QAudioFormat::LittleEndian);
+    format.setSampleType(QAudioFormat::UnSignedInt);
+    format.setFrequency(d->sampling = info.supportedFrequencies().last());
 
     if (!info.isFormatSupported(format))
         qWarning("Format is unsupported");
 
-	d->input = new QAudioInput(info, format, this);
+    d->input = new QAudioInput(info, format, this);
 
-	connect(d->input, SIGNAL(notify()), this, SLOT(_q_on_notify()));
-
-	d->device = new AudioDevice(this);
-	d->input->start(d->device);
+    connect(d->input, SIGNAL(notify()), this, SLOT(_q_on_notify()));
 }
 
 FrequencyAnalyzer::~FrequencyAnalyzer()
@@ -37,35 +35,35 @@ FrequencyAnalyzer::~FrequencyAnalyzer()
 
 qreal FrequencyAnalyzer::currentFrequency() const
 {
-    return d_func()->device->currentFrequency();
+    return d_func()->frequency;
 }
 
 void FrequencyAnalyzer::start()
 {
-	Q_D(FrequencyAnalyzer);
+    Q_D(FrequencyAnalyzer);
+    //if (!d->device) {
+    //    d->device = new AudioDevice(this);
+    //}
+    if (d->device) {
+        //TODO
+    }
+    d->device = d->input->start();
+    connect(d->device, SIGNAL(readyRead()), SLOT(_q_onReadyRead()));
 }
 
-AudioDevice::AudioDevice(QObject *parent) : QIODevice(parent)
+void FrequencyAnalyzer::stop()
 {
-	open(WriteOnly);
+    d_func()->input->stop();
 }
 
-qreal AudioDevice::currentFrequency() const
+void FrequencyAnalyzer::suspend()
 {
-    return m_currentFrequency;
+    d_func()->input->suspend();
 }
 
-qint64 AudioDevice::readData(char *data, qint64 maxlen)
+void FrequencyAnalyzer::resume()
 {
-	Q_UNUSED(data);
-	Q_UNUSED(maxlen);
-	return 0;
-}
-
-qint64 AudioDevice::writeData(const char *data, qint64 len)
-{
-	qDebug() << "Bytes received: " << len;
-	return len;
+    d_func()->input->resume();
 }
 
 #include "moc_frequencyanalyzer.cpp"
