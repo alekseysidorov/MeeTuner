@@ -1,0 +1,3 @@
+[submodule "qml/MeeTuner/components"]
+	path = qml/MeeTuner/components
+	url = https://gorthauer@github.com/gorthauer/qml-components.git
