@@ -3,7 +3,7 @@
  *
  * Code generation for function 'measureFreqXcorr'
  *
- * C source code generated on: Sat Jan 28 01:02:05 2012
+ * C source code generated on: Sat Jan 28 01:30:07 2012
  *
  */
 
@@ -95,8 +95,8 @@ void measureFreqXcorr(const int32_T s[8192], real32_T Fs, real32_T *F, real32_T 
   real_T idx;
   real_T b_idx[7];
   creal32_T PP[3];
+  creal32_T b_PP;
   creal32_T fc0;
-  creal32_T fc1;
   for (i0 = 0; i0 < 8192; i0++) {
     b_s[i0] = (real32_T)s[i0];
   }
@@ -295,11 +295,13 @@ void measureFreqXcorr(const int32_T s[8192], real32_T Fs, real32_T *F, real32_T 
 
   /*  PD = polyder(PP); */
   /*  PZ = roots(PD); */
-  fc0 = mrdivide(eml_div(PP[1], 2.0), PP[0]);
-  fc1.re = fc0.re + 1.0F;
-  fc1.im = fc0.im;
-  fc0 = b_mrdivide(Fs, fc1);
-  *F = fc0.re;
+  b_PP.re = -PP[1].re;
+  b_PP.im = -PP[1].im;
+  b_PP = mrdivide(eml_div(b_PP, 2.0), PP[0]);
+  fc0.re = b_PP.re + 1.0F;
+  fc0.im = b_PP.im;
+  b_PP = b_mrdivide(Fs, fc0);
+  *F = b_PP.re;
 }
 
 /* End of code generation (measureFreqXcorr.cpp) */
