@@ -3,7 +3,7 @@
  *
  * Code generation for function 'polyfit'
  *
- * C source code generated on: Fri Jan 27 01:45:06 2012
+ * C source code generated on: Sat Jan 28 01:02:05 2012
  *
  */
 
@@ -29,6 +29,6 @@
 /* Variable Definitions */
 
 /* Function Declarations */
-extern void polyfit(const real_T x[7], const creal_T y[7], creal_T p[3]);
+extern void polyfit(const real_T x[7], const creal32_T y[7], creal32_T p[3]);
 #endif
 /* End of code generation (polyfit.h) */

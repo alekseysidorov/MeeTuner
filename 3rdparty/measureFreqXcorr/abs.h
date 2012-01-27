@@ -3,7 +3,7 @@
  *
  * Code generation for function 'abs'
  *
- * C source code generated on: Fri Jan 27 01:45:06 2012
+ * C source code generated on: Sat Jan 28 01:02:05 2012
  *
  */
 
@@ -29,6 +29,6 @@
 /* Variable Definitions */
 
 /* Function Declarations */
-extern void b_abs(const creal_T x[8192], real_T y[8192]);
+extern void b_abs(const creal32_T x[8192], real32_T y[8192]);
 #endif
 /* End of code generation (abs.h) */

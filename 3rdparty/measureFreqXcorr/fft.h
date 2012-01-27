@@ -3,7 +3,7 @@
  *
  * Code generation for function 'fft'
  *
- * C source code generated on: Fri Jan 27 01:45:06 2012
+ * C source code generated on: Sat Jan 28 01:02:05 2012
  *
  */
 
@@ -29,6 +29,6 @@
 /* Variable Definitions */
 
 /* Function Declarations */
-extern void fft(const real_T x[8192], creal_T y[8192]);
+extern void fft(const real32_T x[8192], creal32_T y[8192]);
 #endif
 /* End of code generation (fft.h) */

@@ -17,20 +17,18 @@ FrequencyAnalyzer::FrequencyAnalyzer(QObject *parent) :
     QAudioFormat format = info.preferredFormat();
     format.setCodec("audio/pcm");
     format.setByteOrder(QAudioFormat::LittleEndian);
-    format.setSampleType(QAudioFormat::UnSignedInt);
+	format.setSampleType(QAudioFormat::SignedInt);
     format.setFrequency(d->sampling = info.supportedFrequencies().last());
 
     if (!info.isFormatSupported(format))
         qWarning("Format is unsupported");
 
     d->input = new QAudioInput(info, format, this);
-
-    connect(d->input, SIGNAL(notify()), this, SLOT(_q_on_notify()));
 }
 
 FrequencyAnalyzer::~FrequencyAnalyzer()
 {
-
+	stop();
 }
 
 qreal FrequencyAnalyzer::currentFrequency() const

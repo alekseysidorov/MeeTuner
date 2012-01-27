@@ -3,7 +3,7 @@
  *
  * Code generation for function 'measureFreqXcorr'
  *
- * C source code generated on: Fri Jan 27 01:45:06 2012
+ * C source code generated on: Sat Jan 28 01:02:05 2012
  *
  */
 
@@ -29,7 +29,7 @@
 /* Variable Definitions */
 
 /* Function Declarations */
-extern creal_T eml_div(const creal_T x, real_T y);
-extern void measureFreqXcorr(const real_T s[8192], real_T Fs, real_T *F, real_T *snr, creal_T w[8192]);
+extern creal32_T eml_div(const creal32_T x, real_T y);
+extern void measureFreqXcorr(const int32_T s[8192], real32_T Fs, real32_T *F, real32_T *snr, creal32_T w[8192]);
 #endif
 /* End of code generation (measureFreqXcorr.h) */
