@@ -3,7 +3,7 @@
  *
  * Code generation for function 'measureFreqXcorr'
  *
- * C source code generated on: Sat Jan 28 13:22:16 2012
+ * C source code generated on: Sun Jan 29 01:38:19 2012
  *
  */
 
@@ -63,6 +63,7 @@ void measureFreqXcorr(const int32_T s[8192], real32_T Fs, real32_T *F, real32_T 
   real_T b_idx;
   real_T c_idx[7];
   real32_T PP[3];
+  real32_T PZ;
   for (i0 = 0; i0 < 8192; i0++) {
     b_s[i0] = (real32_T)s[i0];
   }
@@ -221,7 +222,13 @@ void measureFreqXcorr(const int32_T s[8192], real32_T Fs, real32_T *F, real32_T 
   }
 
   polyfit(c_idx, f_sh, PP);
-  *F = b_mrdivide(Fs, b_mrdivide(mrdivide(-PP[1], 2.0), PP[0]) - 1.0F);
+  PZ = b_mrdivide(mrdivide(-PP[1], 2.0), PP[0]);
+  if (PZ > 0.0F) {
+    *F = b_mrdivide(Fs, PZ - 1.0F);
+  } else {
+    *F = 0.0F * Fs;
+  }
+
   *snr = (real32_T)fabs(mtmp);
 }
 

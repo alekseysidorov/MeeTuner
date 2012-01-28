@@ -3,7 +3,7 @@
  *
  * Code generation for function 'getNote'
  *
- * C source code generated on: Sat Jan 28 13:22:16 2012
+ * C source code generated on: Sun Jan 29 01:38:19 2012
  *
  */
 
@@ -24,8 +24,8 @@
 /* Function Declarations */
 
 /* Function Definitions */
-void getNote(real32_T f, real_T *Nf, real32_T *Ne, char_T Nn_data[3], int32_T
-             Nn_sizes[2], real_T *No)
+void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T
+             noteName_data[3], int32_T noteName_sizes[2], real_T *noteOctave)
 {
   real32_T y[145];
   int32_T ixstart;
@@ -80,7 +80,7 @@ void getNote(real32_T f, real_T *Nf, real32_T *Ne, char_T Nn_data[3], int32_T
     }
   }
 
-  *Nf = notes[itmp];
+  *noteFreq = notes[itmp];
   fdbl = f / (real32_T)notes[itmp];
   if (fdbl == 0.0F) {
     fdbl = ((real32_T)rtMinusInf);
@@ -103,7 +103,7 @@ void getNote(real32_T f, real_T *Nf, real32_T *Ne, char_T Nn_data[3], int32_T
     }
   }
 
-  *Ne = 100.0F * fdbl * 12.0F;
+  *noteError = 100.0F * fdbl * 12.0F;
   b_y = ((real_T)(itmp + 1) - 1.0) / 12.0;
   if (b_y > 0.0) {
     ixstart = (int32_T)floor(b_y);
@@ -111,95 +111,95 @@ void getNote(real32_T f, real_T *Nf, real32_T *Ne, char_T Nn_data[3], int32_T
     ixstart = 0;
   }
 
-  *No = (real_T)ixstart + 1.0;
+  *noteOctave = (real_T)ixstart + 1.0;
   switch ((itmp - (int32_T)floor(((real_T)(itmp + 1) - 1.0) / 12.0) * 12) + 1) {
    case 1:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 1;
-    Nn_data[0] = 'A';
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 1;
+    noteName_data[0] = 'A';
     break;
 
    case 2:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 2;
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 2;
     for (ixstart = 0; ixstart < 2; ixstart++) {
-      Nn_data[ixstart] = cv0[ixstart];
+      noteName_data[ixstart] = cv0[ixstart];
     }
     break;
 
    case 3:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 1;
-    Nn_data[0] = 'B';
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 1;
+    noteName_data[0] = 'B';
     break;
 
    case 4:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 1;
-    Nn_data[0] = 'C';
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 1;
+    noteName_data[0] = 'C';
     break;
 
    case 5:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 2;
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 2;
     for (ixstart = 0; ixstart < 2; ixstart++) {
-      Nn_data[ixstart] = cv1[ixstart];
+      noteName_data[ixstart] = cv1[ixstart];
     }
     break;
 
    case 6:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 1;
-    Nn_data[0] = 'D';
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 1;
+    noteName_data[0] = 'D';
     break;
 
    case 7:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 2;
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 2;
     for (ixstart = 0; ixstart < 2; ixstart++) {
-      Nn_data[ixstart] = cv2[ixstart];
+      noteName_data[ixstart] = cv2[ixstart];
     }
     break;
 
    case 8:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 1;
-    Nn_data[0] = 'E';
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 1;
+    noteName_data[0] = 'E';
     break;
 
    case 9:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 1;
-    Nn_data[0] = 'F';
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 1;
+    noteName_data[0] = 'F';
     break;
 
    case 10:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 2;
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 2;
     for (ixstart = 0; ixstart < 2; ixstart++) {
-      Nn_data[ixstart] = cv3[ixstart];
+      noteName_data[ixstart] = cv3[ixstart];
     }
     break;
 
    case 11:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 1;
-    Nn_data[0] = 'G';
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 1;
+    noteName_data[0] = 'G';
     break;
 
    case 12:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 2;
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 2;
     for (ixstart = 0; ixstart < 2; ixstart++) {
-      Nn_data[ixstart] = cv4[ixstart];
+      noteName_data[ixstart] = cv4[ixstart];
     }
     break;
 
    default:
-    Nn_sizes[0] = 1;
-    Nn_sizes[1] = 3;
+    noteName_sizes[0] = 1;
+    noteName_sizes[1] = 3;
     for (ixstart = 0; ixstart < 3; ixstart++) {
-      Nn_data[ixstart] = cv5[ixstart];
+      noteName_data[ixstart] = cv5[ixstart];
     }
     break;
   }

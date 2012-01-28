@@ -3,7 +3,7 @@
  *
  * Code generation for function 'getNote'
  *
- * C source code generated on: Sat Jan 28 13:22:16 2012
+ * C source code generated on: Sun Jan 29 01:38:19 2012
  *
  */
 
@@ -28,6 +28,6 @@
 /* Variable Definitions */
 
 /* Function Declarations */
-extern void getNote(real32_T f, real_T *Nf, real32_T *Ne, char_T Nn_data[3], int32_T Nn_sizes[2], real_T *No);
+extern void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T noteName_data[3], int32_T noteName_sizes[2], real_T *noteOctave);
 #endif
 /* End of code generation (getNote.h) */
