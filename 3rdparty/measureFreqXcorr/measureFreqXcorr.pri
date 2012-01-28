@@ -4,11 +4,7 @@
 
 # Input
 HEADERS += $$PWD/abs.h \
-           $$PWD/$$PWD/fft.h \
-           $$PWD/$$PWD/ifft.h \
            $$PWD/measureFreqXcorr.h \
-           $$PWD/measureFreqXcorr_initialize.h \
-           $$PWD/measureFreqXcorr_terminate.h \
            $$PWD/measureFreqXcorr_types.h \
            $$PWD/mrdivide.h \
            $$PWD/polyfit.h \
@@ -17,20 +13,34 @@ HEADERS += $$PWD/abs.h \
            $$PWD/rt_nonfinite.h \
            $$PWD/rtGetInf.h \
            $$PWD/rtGetNaN.h \
-           $$PWD/rtwtypes.h
+           $$PWD/rtwtypes.h \
+           $$PWD/power.h \
+           $$PWD/polyfit.h \
+           $$PWD/mrdivide.h \
+           $$PWD/ifft.h \
+           $$PWD/getNote_types.h \
+           $$PWD/getNote_terminate.h \
+           $$PWD/getNote_initialize.h \
+           $$PWD/getNote_data.h \
+           $$PWD/getNote.h \
+           $$PWD/fft.h \
+           $$PWD/diff.h
 
 SOURCES += $$PWD/abs.cpp \
            $$PWD/fft.cpp \
            $$PWD/ifft.cpp \
            $$PWD/measureFreqXcorr.cpp \
-           $$PWD/measureFreqXcorr_initialize.cpp \
-           $$PWD/measureFreqXcorr_terminate.cpp \
            $$PWD/mrdivide.cpp \
-           $$PWD/polyfit.cpp \
            $$PWD/power.cpp \
            $$PWD/rt_nonfinite.cpp \
            $$PWD/rtGetInf.cpp \
-           $$PWD/rtGetNaN.cpp
+           $$PWD/rtGetNaN.cpp \
+           $$PWD/polyfit.cpp \
+           $$PWD/getNote_terminate.cpp \
+           $$PWD/getNote_initialize.cpp \
+           $$PWD/getNote_data.cpp \
+           $$PWD/getNote.cpp \
+           $$PWD/diff.cpp
 
 INCLUDEPATH += $$PWD
 DEPENDPATH  += $$PWD
