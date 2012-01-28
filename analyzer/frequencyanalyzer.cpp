@@ -28,7 +28,7 @@ FrequencyAnalyzer::FrequencyAnalyzer(QObject *parent) :
     }
 
     d->input = new QAudioInput(info, format, this);
-    connect(d->input, SIGNAL(stateChanged(QAudio::State)), SLOT(_q_stateChanged(QAudio::State)));
+    connect(d->input, SIGNAL(stateChanged(QAudio::State)), SLOT(_q_onStateChanged()));
 }
 
 FrequencyAnalyzer::~FrequencyAnalyzer()
@@ -49,12 +49,12 @@ FrequencyAnalyzer::State FrequencyAnalyzer::state() const
 void FrequencyAnalyzer::start()
 {
     Q_D(FrequencyAnalyzer);
-    if (d->device) {
-        //TODO
-        d->device->deleteLater();
-    }
-    d->device = d->input->start();
-    connect(d->device, SIGNAL(readyRead()), SLOT(_q_onReadyRead()));
+    if (!d->device) {
+        d->device = d->input->start();
+        connect(d->device, SIGNAL(readyRead()), SLOT(_q_onReadyRead()));
+        connect(d->device, SIGNAL(destroyed(QObject*)), SLOT(_q_onDeviceDestroyed(QObject*)));
+    } else
+        d->input->start(d->device);
 }
 
 void FrequencyAnalyzer::stop()

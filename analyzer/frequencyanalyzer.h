@@ -31,6 +31,8 @@ protected:
 	QScopedPointer<FrequencyAnalyzerPrivate> d_ptr;
 
     Q_PRIVATE_SLOT(d_func(), void _q_onReadyRead())
+    Q_PRIVATE_SLOT(d_func(), void _q_onStateChanged())
+    Q_PRIVATE_SLOT(d_func(), void _q_onDeviceDestroyed(QObject*))
 };
 
 #endif // FREQUENCYANALYZER_H
