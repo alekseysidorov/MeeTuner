@@ -18,7 +18,8 @@ class FrequencyAnalyzerPrivate
 {
 	Q_DECLARE_PUBLIC(FrequencyAnalyzer)
 public:
-	FrequencyAnalyzerPrivate(FrequencyAnalyzer *q) : q_ptr(q), input(0), device(0), sampling(-1) {}
+    FrequencyAnalyzerPrivate(FrequencyAnalyzer *q) : q_ptr(q), input(0),
+        device(0), frequency(0), sampling(-1) {}
 	~FrequencyAnalyzerPrivate() {}
 
 	FrequencyAnalyzer *q_ptr;
@@ -33,20 +34,25 @@ public:
 		buffer.append(device->readAll());
 		if (buffer.count() >= sampleSize) {
 			//TODO optimize me
-			int32_T s[frameSize];
-			QDataStream stream(buffer);
-			for (int i = 0; i!= frameSize; i++)
-				stream >> s[i];
+            //int32_T s[frameSize];
+            //QDataStream stream(buffer);
+            //for (int i = 0; i!= frameSize; i++)
+            //    stream >> s[i];
+
+            int32_T *s = reinterpret_cast<int32_T*>(buffer.data()); //fast black magic
 
 			real32_T snr;
 			creal32_T w[frameSize];
 			measureFreqXcorr(s, sampling, &frequency, &snr, w);
 
-			qDebug() << frequency << snr;
 			emit q_func()->currentFrequencyChanged(frequency);
 			buffer.clear();
 		}
 	}
+    void _q_stateChanged(QAudio::State state)
+    {
+        emit q_func()->stateChanged(static_cast<FrequencyAnalyzer::State>(state));
+    }
 };
 
 #endif // FREQUENCYANALYZER_P_H
