@@ -1,26 +1,27 @@
 import "components"
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import org.meetuner 1.0
 
 PageTileWindow {
 	id: appWindow
 
-	initialPage: mainPage
+	property alias analyzer: noteAnalyzer.frequencyAnalyzer
 
-	MainPage {
-		id: mainPage
+	initialPage: tunerPage
+
+	TunerPage {
+		id: tunerPage
+	}
+	TestPage {
+		id: testPage
+	}
+	AboutPage {
+		id: aboutPage
 	}
 
-	AnotherPage {
-		id: anotherPage
-		Label {
-			id: foo
-			color: "gray"
-			font.pointSize: 18
-			anchors.centerIn: parent
-			text: "Another Page"
-		}
-
+	NoteAnalyzer {
+		id: noteAnalyzer
 	}
 
 	ToolBarLayout {
@@ -37,20 +38,30 @@ PageTileWindow {
 
 			TileIcon {
 				id: audioIcon
-				iconSource: checked ? "images/tab_audio_down.png" :
-									  "images/tab_audio_up.png"
-				text: "Audio files"
-				badge: "42"
+				iconSource: checked ? "images/tile-audio-down.png" :
+									  "images/tile-audio-up.png"
+				text: qsTr("Tuner")
 				checkable: true
-				page: mainPage
+				page: tunerPage
+				transformOrigin: Item.BottomLeft
 			}
 			TileIcon {
-				iconSource: checked ? "images/tab_profile_down.png" :
-									  "images/tab_profile_up.png"
-				text: "Profiles"
-				badge: "7"
+				id: testIcon
+				iconSource: checked ? "images/tile-test-down.png" :
+									  "images/tile-test-up.png"
+				text: qsTr("Debug")
 				checkable: true
-				page: anotherPage
+				page: testPage
+				badge: (analyzer.state === FrequencyAnalyzer.ActiveState) ? "*" : "";
+			}
+			TileIcon {
+				iconSource: checked ? "images/tile-about-down.png" :
+									  "images/tile-about-up.png"
+				text: qsTr("About")
+				checkable: true
+				page: aboutPage
+				anchors.right: parent.right
+				transformOrigin: Item.BottomRight
 			}
 		}
 	}
