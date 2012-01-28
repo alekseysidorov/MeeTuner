@@ -3,7 +3,7 @@
  *
  * Code generation for function 'measureFreqXcorr'
  *
- * C source code generated on: Sat Jan 28 01:30:07 2012
+ * C source code generated on: Sat Jan 28 13:22:16 2012
  *
  */
 
@@ -14,11 +14,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "rt_defines.h"
 #include "rt_nonfinite.h"
 
 #include "rtwtypes.h"
-#include "measureFreqXcorr_types.h"
+#include "getNote_types.h"
 
 /* Type Definitions */
 
@@ -29,7 +28,6 @@
 /* Variable Definitions */
 
 /* Function Declarations */
-extern creal32_T eml_div(const creal32_T x, real_T y);
 extern void measureFreqXcorr(const int32_T s[8192], real32_T Fs, real32_T *F, real32_T *snr, creal32_T w[8192]);
 #endif
 /* End of code generation (measureFreqXcorr.h) */

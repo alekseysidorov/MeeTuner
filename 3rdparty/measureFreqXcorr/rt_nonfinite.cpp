@@ -1,9 +1,9 @@
 /*
  * rt_nonfinite.cpp
  *
- * Code generation for function 'measureFreqXcorr'
+ * Code generation for function 'getNote'
  *
- * C source code generated on: Sat Jan 28 01:30:08 2012
+ * C source code generated on: Sat Jan 28 13:22:16 2012
  *
  */
 

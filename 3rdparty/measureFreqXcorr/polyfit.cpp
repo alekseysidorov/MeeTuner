@@ -3,12 +3,13 @@
  *
  * Code generation for function 'polyfit'
  *
- * C source code generated on: Sat Jan 28 01:30:07 2012
+ * C source code generated on: Sat Jan 28 13:22:16 2012
  *
  */
 
 /* Include files */
 #include "rt_nonfinite.h"
+#include "getNote.h"
 #include "measureFreqXcorr.h"
 #include "polyfit.h"
 
@@ -21,13 +22,19 @@
 /* Variable Definitions */
 
 /* Function Declarations */
+static real32_T eml_div(real32_T x, real_T y);
 static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
   real_T C[21], int32_T ic0, real_T work[3]);
-static void eml_qrsolve(const real_T A[21], creal32_T B[7], boolean_T
-  ignoreRankDeficiency, creal32_T Y[3], real_T *rankR);
+static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
+  ignoreRankDeficiency, real32_T Y[3], real_T *rankR);
 static real_T eml_xnrm2(int32_T n, const real_T x[21], int32_T ix0);
 
 /* Function Definitions */
+static real32_T eml_div(real32_T x, real_T y)
+{
+  return x / (real32_T)y;
+}
+
 static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
   real_T C[21], int32_T ic0, real_T work[3])
 {
@@ -38,7 +45,7 @@ static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
   int32_T colbottom;
   int32_T exitg1;
   int32_T iy;
-  int32_T i1;
+  int32_T i2;
   int32_T ix;
   real_T c;
   int32_T ia;
@@ -87,8 +94,8 @@ static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
       }
 
       iy = 0;
-      i1 = ic0 + 7 * i;
-      for (i = ic0; i <= i1; i += 7) {
+      i2 = ic0 + 7 * i;
+      for (i = ic0; i <= i2; i += 7) {
         ix = iv0;
         c = 0.0;
         colbottom = i + lastv;
@@ -110,8 +117,8 @@ static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
         if (work[colbottom] != 0.0) {
           c = work[colbottom] * -tau;
           ix = iv0;
-          i1 = lastv + i;
-          for (iy = i; iy + 1 <= i1; iy++) {
+          i2 = lastv + i;
+          for (iy = i; iy + 1 <= i2; iy++) {
             C[iy] += C[ix - 1] * c;
             ix++;
           }
@@ -124,8 +131,8 @@ static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
   }
 }
 
-static void eml_qrsolve(const real_T A[21], creal32_T B[7], boolean_T
-  ignoreRankDeficiency, creal32_T Y[3], real_T *rankR)
+static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
+  ignoreRankDeficiency, real32_T Y[3], real_T *rankR)
 {
   real_T b_A[21];
   real_T tau[3];
@@ -143,8 +150,7 @@ static void eml_qrsolve(const real_T A[21], creal32_T B[7], boolean_T
   int32_T i;
   int32_T i_i;
   int32_T ix;
-  real32_T wj_re;
-  real32_T wj_im;
+  real32_T wj;
   memcpy((void *)&b_A[0], (void *)&A[0], 21U * sizeof(real_T));
   for (nmip1 = 0; nmip1 < 3; nmip1++) {
     jpvt[nmip1] = (int8_T)(1 + nmip1);
@@ -344,29 +350,23 @@ static void eml_qrsolve(const real_T A[21], creal32_T B[7], boolean_T
   }
 
   for (i = 0; i < 3; i++) {
-    Y[i].re = 0.0F;
-    Y[i].im = 0.0F;
+    Y[i] = 0.0F;
   }
 
   for (pvt = 0; pvt < 3; pvt++) {
     if (tau[pvt] != 0.0) {
-      wj_re = B[pvt].re;
-      wj_im = B[pvt].im;
+      wj = B[pvt];
       for (i = 0; i <= 5 - pvt; i++) {
         nmip1 = (pvt + i) + 1;
-        wj_re += (real32_T)b_A[nmip1 + 7 * pvt] * B[nmip1].re;
-        wj_im += (real32_T)b_A[nmip1 + 7 * pvt] * B[nmip1].im;
+        wj += (real32_T)b_A[nmip1 + 7 * pvt] * B[nmip1];
       }
 
-      wj_re *= (real32_T)tau[pvt];
-      wj_im *= (real32_T)tau[pvt];
-      if ((wj_re != 0.0F) || (wj_im != 0.0F)) {
-        B[pvt].re -= wj_re;
-        B[pvt].im -= wj_im;
+      wj *= (real32_T)tau[pvt];
+      if (wj != 0.0F) {
+        B[pvt] -= wj;
         for (i = 0; i <= 5 - pvt; i++) {
           nmip1 = (pvt + i) + 1;
-          B[nmip1].re -= (real32_T)b_A[nmip1 + 7 * pvt] * wj_re;
-          B[nmip1].im -= (real32_T)b_A[nmip1 + 7 * pvt] * wj_im;
+          B[nmip1] -= (real32_T)b_A[nmip1 + 7 * pvt] * wj;
         }
       }
     }
@@ -380,10 +380,7 @@ static void eml_qrsolve(const real_T A[21], creal32_T B[7], boolean_T
     Y[jpvt[2 - pvt] - 1] = eml_div(Y[jpvt[2 - pvt] - 1], b_A[(7 * (2 - pvt) -
       pvt) + 2]);
     for (i = 0; i <= 1 - pvt; i++) {
-      Y[jpvt[i] - 1].re -= Y[jpvt[2 - pvt] - 1].re * (real32_T)b_A[i + 7 * (2 -
-        pvt)];
-      Y[jpvt[i] - 1].im -= Y[jpvt[2 - pvt] - 1].im * (real32_T)b_A[i + 7 * (2 -
-        pvt)];
+      Y[jpvt[i] - 1] -= Y[jpvt[2 - pvt] - 1] * (real32_T)b_A[i + 7 * (2 - pvt)];
     }
   }
 }
@@ -421,13 +418,13 @@ static real_T eml_xnrm2(int32_T n, const real_T x[21], int32_T ix0)
   return y;
 }
 
-void polyfit(const real_T x[7], const creal32_T y[7], creal32_T p[3])
+void polyfit(const real_T x[7], const real32_T y[7], real32_T p[3])
 {
   real_T V[21];
-  creal32_T b_y[7];
+  real32_T b_y[7];
   int32_T k;
   real_T rr;
-  creal32_T p1[3];
+  real32_T p1[3];
   for (k = 0; k < 7; k++) {
     V[14 + k] = 1.0;
     V[7 + k] = x[k];

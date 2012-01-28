@@ -3,12 +3,13 @@
  *
  * Code generation for function 'power'
  *
- * C source code generated on: Sat Jan 28 01:30:07 2012
+ * C source code generated on: Sat Jan 28 13:22:16 2012
  *
  */
 
 /* Include files */
 #include "rt_nonfinite.h"
+#include "getNote.h"
 #include "measureFreqXcorr.h"
 #include "power.h"
 

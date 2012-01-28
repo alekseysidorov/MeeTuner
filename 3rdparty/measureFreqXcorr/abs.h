@@ -3,7 +3,7 @@
  *
  * Code generation for function 'abs'
  *
- * C source code generated on: Sat Jan 28 01:30:07 2012
+ * C source code generated on: Sat Jan 28 13:22:16 2012
  *
  */
 
@@ -14,11 +14,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "rt_defines.h"
 #include "rt_nonfinite.h"
 
 #include "rtwtypes.h"
-#include "measureFreqXcorr_types.h"
+#include "getNote_types.h"
 
 /* Type Definitions */
 

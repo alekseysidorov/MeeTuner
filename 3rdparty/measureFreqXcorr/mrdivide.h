@@ -3,7 +3,7 @@
  *
  * Code generation for function 'mrdivide'
  *
- * C source code generated on: Sat Jan 28 01:30:07 2012
+ * C source code generated on: Sat Jan 28 13:22:16 2012
  *
  */
 
@@ -14,11 +14,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "rt_defines.h"
 #include "rt_nonfinite.h"
 
 #include "rtwtypes.h"
-#include "measureFreqXcorr_types.h"
+#include "getNote_types.h"
 
 /* Type Definitions */
 
@@ -29,7 +28,8 @@
 /* Variable Definitions */
 
 /* Function Declarations */
-extern creal32_T b_mrdivide(real32_T A, const creal32_T B);
-extern creal32_T mrdivide(const creal32_T A, const creal32_T B);
+extern real32_T b_mrdivide(real32_T A, real32_T B);
+extern void c_mrdivide(const creal32_T A[8192], const creal32_T B, creal32_T y[8192]);
+extern real32_T mrdivide(real32_T A, real_T B);
 #endif
 /* End of code generation (mrdivide.h) */
