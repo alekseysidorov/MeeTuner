@@ -3,7 +3,7 @@
  *
  * Code generation for function 'getNote'
  *
- * C source code generated on: Mon Jan 30 00:39:15 2012
+ * C source code generated on: Mon Jan 30 01:21:37 2012
  *
  */
 
@@ -14,7 +14,6 @@
 /* Type Definitions */
 
 /* Named Constants */
-#define th                             (0.25F)
 
 /* Variable Declarations */
 
@@ -1377,8 +1376,8 @@ void getNote_terminate(void)
  * function [F, snr, w] = measureFreqXcorr(s, analizeTime, Fs, th)
  */
 void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
-                      real32_T *F, real32_T *snr, creal32_T w_data[65535],
-                      int32_T w_sizes[2])
+                      real32_T th, real32_T *F, real32_T *snr, creal32_T w_data
+                      [65535], int32_T w_sizes[2])
 {
   real32_T b_s[8192];
   int32_T gorb;
