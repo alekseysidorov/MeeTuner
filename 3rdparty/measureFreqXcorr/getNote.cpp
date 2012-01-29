@@ -3,7 +3,7 @@
  *
  * Code generation for function 'getNote'
  *
- * C source code generated on: Sun Jan 29 22:42:04 2012
+ * C source code generated on: Sun Jan 29 22:55:36 2012
  *
  */
 
@@ -14,6 +14,7 @@
 /* Type Definitions */
 
 /* Named Constants */
+#define th                             (0.25F)
 
 /* Variable Declarations */
 
@@ -1413,7 +1414,7 @@ void getNote_terminate(void)
 }
 
 /*
- * function [F, snr, w] = measureFreqXcorr(s, analizeTime, Fs)
+ * function [F, snr, w] = measureFreqXcorr(s, analizeTime, Fs, th)
  */
 void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
                       real32_T *F, real32_T *snr, creal32_T w_data[65535],
@@ -1425,7 +1426,7 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   static real32_T sh_data[65535];
   static real32_T b_sh_data[65535];
   int32_T shd_sizes[2];
-  int32_T k;
+  int32_T loop_ub;
   static creal32_T c_sh_data[65535];
   static creal32_T d_sh_data[65535];
   int32_T b_sh_sizes[2];
@@ -1435,12 +1436,12 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   static boolean_T poses_pos_data[65534];
   boolean_T poses_neg_data[65534];
   int32_T nx;
+  int32_T k;
   int32_T idx;
   int32_T ii_data[1];
   int32_T ixstart;
   boolean_T exitg4;
   int32_T b_ii_data[1];
-  int32_T idx_start_sizes;
   int32_T idx_start_data[1];
   static int32_T c_ii_data[65534];
   boolean_T exitg3;
@@ -1478,8 +1479,8 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   b_abs(w_data, w_sizes, sh_data, sh_sizes);
   shd_sizes[0] = 1;
   shd_sizes[1] = sh_sizes[1];
-  k = sh_sizes[0] * sh_sizes[1] - 1;
-  for (i0 = 0; i0 <= k; i0++) {
+  loop_ub = sh_sizes[0] * sh_sizes[1] - 1;
+  for (i0 = 0; i0 <= loop_ub; i0++) {
     b_sh_data[i0] = sh_data[i0];
   }
 
@@ -1489,39 +1490,39 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   /* 'measureFreqXcorr:7' sh = real(sh/sh(1)); */
   b_sh_sizes[0] = 1;
   b_sh_sizes[1] = shd_sizes[1];
-  k = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= k; i0++) {
+  loop_ub = shd_sizes[0] * shd_sizes[1] - 1;
+  for (i0 = 0; i0 <= loop_ub; i0++) {
     d_sh_data[i0] = c_sh_data[i0];
   }
 
   c_mrdivide(d_sh_data, b_sh_sizes, c_sh_data[0], c_sh_data, shd_sizes);
   sh_sizes[0] = 1;
   sh_sizes[1] = shd_sizes[1];
-  k = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= k; i0++) {
+  loop_ub = shd_sizes[0] * shd_sizes[1] - 1;
+  for (i0 = 0; i0 <= loop_ub; i0++) {
     sh_data[i0] = c_sh_data[i0].re;
   }
 
-  /* 'measureFreqXcorr:8' shi = sh>0.5; */
+  /* 'measureFreqXcorr:8' shi = sh>th; */
   /* 'measureFreqXcorr:9' shd = diff(shi); */
   c_sh_sizes[0] = 1;
   c_sh_sizes[1] = sh_sizes[1];
-  k = sh_sizes[1] - 1;
-  for (i0 = 0; i0 <= k; i0++) {
-    e_sh_data[i0] = (sh_data[i0] > 0.5F);
+  loop_ub = sh_sizes[1] - 1;
+  for (i0 = 0; i0 <= loop_ub; i0++) {
+    e_sh_data[i0] = (sh_data[i0] > th);
   }
 
   diff(e_sh_data, c_sh_sizes, shd_data, shd_sizes);
 
   /* 'measureFreqXcorr:10' poses_pos = shd>0; */
-  k = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= k; i0++) {
+  loop_ub = shd_sizes[0] * shd_sizes[1] - 1;
+  for (i0 = 0; i0 <= loop_ub; i0++) {
     poses_pos_data[i0] = (shd_data[i0] > 0.0);
   }
 
   /* 'measureFreqXcorr:11' poses_neg = shd<0; */
-  k = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= k; i0++) {
+  loop_ub = shd_sizes[0] * shd_sizes[1] - 1;
+  for (i0 = 0; i0 <= loop_ub; i0++) {
     poses_neg_data[i0] = (shd_data[i0] < 0.0);
   }
 
@@ -1566,213 +1567,211 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
     }
   }
 
-  idx_start_sizes = k;
-  k--;
-  for (i0 = 0; i0 <= k; i0++) {
+  loop_ub = k - 1;
+  for (i0 = 0; i0 <= loop_ub; i0++) {
     idx_start_data[i0] = ii_data[i0];
   }
 
-  /* 'measureFreqXcorr:13' idx_ends   = find(poses_neg); */
-  nx = shd_sizes[0] * shd_sizes[1];
-  idx = 0;
-  ixstart = 1;
-  exitg3 = 0U;
-  while ((exitg3 == 0U) && (ixstart <= nx)) {
-    guard1 = FALSE;
-    if (poses_neg_data[ixstart - 1]) {
-      idx++;
-      c_ii_data[idx - 1] = ixstart;
-      if (idx >= nx) {
-        exitg3 = 1U;
+  /* 'measureFreqXcorr:14' if isempty(idx_start) */
+  if (k == 0) {
+  } else {
+    /* 'measureFreqXcorr:18' idx_ends   = find(poses_neg); */
+    nx = shd_sizes[0] * shd_sizes[1];
+    idx = 0;
+    ixstart = 1;
+    exitg3 = 0U;
+    while ((exitg3 == 0U) && (ixstart <= nx)) {
+      guard1 = FALSE;
+      if (poses_neg_data[ixstart - 1]) {
+        idx++;
+        c_ii_data[idx - 1] = ixstart;
+        if (idx >= nx) {
+          exitg3 = 1U;
+        } else {
+          guard1 = TRUE;
+        }
       } else {
         guard1 = TRUE;
       }
+
+      if (guard1 == TRUE) {
+        ixstart++;
+      }
+    }
+
+    if (nx == 1) {
+      if (idx == 0) {
+        nx = 0;
+      }
     } else {
-      guard1 = TRUE;
+      if (1 > idx) {
+        idx = 0;
+      }
+
+      loop_ub = idx - 1;
+      for (i0 = 0; i0 <= loop_ub; i0++) {
+        d_ii_data[i0] = c_ii_data[i0];
+      }
+
+      nx = idx;
+      loop_ub = idx - 1;
+      for (i0 = 0; i0 <= loop_ub; i0++) {
+        c_ii_data[i0] = d_ii_data[i0];
+      }
     }
 
-    if (guard1 == TRUE) {
-      ixstart++;
+    loop_ub = nx - 1;
+    for (i0 = 0; i0 <= loop_ub; i0++) {
+      idx_ends_data[i0] = c_ii_data[i0];
     }
-  }
 
-  if (nx == 1) {
-    if (idx == 0) {
-      nx = 0;
-    }
-  } else {
-    if (1 > idx) {
+    /* 'measureFreqXcorr:19' if isempty(idx_ends) */
+    if (nx == 0) {
+    } else {
+      /* 'measureFreqXcorr:23' end_poses = find(idx_ends>idx_start,1,'first'); */
+      loop_ub = nx - 1;
+      for (i0 = 0; i0 <= loop_ub; i0++) {
+        x_data[i0] = (idx_ends_data[i0] > idx_start_data[i0]);
+      }
+
       idx = 0;
-    }
-
-    k = idx - 1;
-    for (i0 = 0; i0 <= k; i0++) {
-      d_ii_data[i0] = c_ii_data[i0];
-    }
-
-    nx = idx;
-    k = idx - 1;
-    for (i0 = 0; i0 <= k; i0++) {
-      c_ii_data[i0] = d_ii_data[i0];
-    }
-  }
-
-  k = nx - 1;
-  for (i0 = 0; i0 <= k; i0++) {
-    idx_ends_data[i0] = c_ii_data[i0];
-  }
-
-  /* 'measureFreqXcorr:14' idx_end = idx_ends(find(idx_ends>idx_start,1,'first')); */
-  k = nx - 1;
-  for (i0 = 0; i0 <= k; i0++) {
-    x_data[i0] = (idx_ends_data[i0] > idx_start_data[i0]);
-  }
-
-  k = 1 <= nx ? 1 : nx;
-  idx = 0;
-  ixstart = 1;
-  exitg2 = 0U;
-  while ((exitg2 == 0U) && (ixstart <= nx)) {
-    if (x_data[0]) {
-      idx = 1;
-      exitg2 = 1U;
-    } else {
-      ixstart = 2;
-    }
-  }
-
-  if (k == 1) {
-    if (idx == 0) {
-      k = 0;
-    }
-  } else {
-    if (1 > idx) {
-      ixstart = -1;
-    } else {
-      ixstart = 0;
-    }
-
-    k = ixstart + 1;
-  }
-
-  /* 'measureFreqXcorr:15' if isempty(idx_end) || isempty(idx_start) */
-  if ((k == 0) || (idx_start_sizes == 0)) {
-  } else {
-    /* 'measureFreqXcorr:18' sh (1:(idx_start(1)-1)) = 0; */
-    if (1.0 > (real_T)idx_start_data[0] - 1.0) {
-      i0 = -1;
-    } else {
-      i0 = idx_start_data[0] - 2;
-    }
-
-    for (ixstart = 0; ixstart <= i0; ixstart++) {
-      tmp_data[ixstart] = 1 + ixstart;
-    }
-
-    k = i0;
-    for (ixstart = 0; ixstart <= k; ixstart++) {
-      b_tmp_data[ixstart] = tmp_data[ixstart];
-    }
-
-    k = i0;
-    for (i0 = 0; i0 <= k; i0++) {
-      sh_data[b_tmp_data[i0] - 1] = 0.0F;
-    }
-
-    /* 'measureFreqXcorr:19' sh (idx_end(1)+1:analizeTime) = 0; */
-    if (idx_ends_data[0] + 1 > analizeTime) {
-      i0 = 0;
-      ixstart = 0;
-    } else {
-      i0 = idx_ends_data[0];
-      ixstart = analizeTime;
-    }
-
-    nx = ixstart - i0;
-    k = (ixstart - i0) - 1;
-    for (ixstart = 0; ixstart <= k; ixstart++) {
-      c_tmp_data[ixstart] = (i0 + ixstart) + 1;
-    }
-
-    k = nx - 1;
-    for (i0 = 0; i0 <= k; i0++) {
-      d_tmp_data[i0] = c_tmp_data[i0];
-    }
-
-    k = nx - 1;
-    for (i0 = 0; i0 <= k; i0++) {
-      sh_data[d_tmp_data[i0] - 1] = 0.0F;
-    }
-
-    /* 'measureFreqXcorr:20' [M,p] = max(sh); */
-    ixstart = 1;
-    mtmp = sh_data[0];
-    k = 1;
-    if (sh_sizes[1] > 1) {
-      if (rtIsNaNF(sh_data[0])) {
-        nx = 2;
-        exitg1 = 0U;
-        while ((exitg1 == 0U) && (nx <= sh_sizes[1])) {
-          ixstart = nx;
-          if (!rtIsNaNF(sh_data[nx - 1])) {
-            mtmp = sh_data[nx - 1];
-            exitg1 = 1U;
-          } else {
-            nx++;
-          }
+      k = 1;
+      ixstart = 1;
+      exitg2 = 0U;
+      while ((exitg2 == 0U) && (ixstart <= 1)) {
+        if (x_data[0]) {
+          idx = 1;
+          exitg2 = 1U;
+        } else {
+          ixstart = 2;
         }
       }
 
-      if (ixstart < sh_sizes[1]) {
-        while (ixstart + 1 <= sh_sizes[1]) {
-          if (sh_data[ixstart] > mtmp) {
-            mtmp = sh_data[ixstart];
-            k = ixstart + 1;
+      if (idx == 0) {
+        k = 0;
+      }
+
+      /* 'measureFreqXcorr:24' if isempty(end_poses) */
+      if (k == 0) {
+      } else {
+        /* 'measureFreqXcorr:28' idx_end = idx_ends(end_poses); */
+        /* 'measureFreqXcorr:30' sh (1:(idx_start(1)-1)) = 0; */
+        if (1.0 > (real_T)idx_start_data[0] - 1.0) {
+          i0 = -1;
+        } else {
+          i0 = idx_start_data[0] - 2;
+        }
+
+        for (ixstart = 0; ixstart <= i0; ixstart++) {
+          tmp_data[ixstart] = 1 + ixstart;
+        }
+
+        loop_ub = i0;
+        for (ixstart = 0; ixstart <= loop_ub; ixstart++) {
+          b_tmp_data[ixstart] = tmp_data[ixstart];
+        }
+
+        loop_ub = i0;
+        for (i0 = 0; i0 <= loop_ub; i0++) {
+          sh_data[b_tmp_data[i0] - 1] = 0.0F;
+        }
+
+        /* 'measureFreqXcorr:31' sh (idx_end(1)+1:analizeTime) = 0; */
+        if (idx_ends_data[0] + 1 > analizeTime) {
+          i0 = 0;
+          ixstart = 0;
+        } else {
+          i0 = idx_ends_data[0];
+          ixstart = analizeTime;
+        }
+
+        nx = ixstart - i0;
+        loop_ub = (ixstart - i0) - 1;
+        for (ixstart = 0; ixstart <= loop_ub; ixstart++) {
+          c_tmp_data[ixstart] = (i0 + ixstart) + 1;
+        }
+
+        loop_ub = nx - 1;
+        for (i0 = 0; i0 <= loop_ub; i0++) {
+          d_tmp_data[i0] = c_tmp_data[i0];
+        }
+
+        loop_ub = nx - 1;
+        for (i0 = 0; i0 <= loop_ub; i0++) {
+          sh_data[d_tmp_data[i0] - 1] = 0.0F;
+        }
+
+        /* 'measureFreqXcorr:32' [M,p] = max(sh); */
+        ixstart = 1;
+        mtmp = sh_data[0];
+        idx = 1;
+        if (sh_sizes[1] > 1) {
+          if (rtIsNaNF(sh_data[0])) {
+            nx = 2;
+            exitg1 = 0U;
+            while ((exitg1 == 0U) && (nx <= sh_sizes[1])) {
+              ixstart = nx;
+              if (!rtIsNaNF(sh_data[nx - 1])) {
+                mtmp = sh_data[nx - 1];
+                exitg1 = 1U;
+              } else {
+                nx++;
+              }
+            }
           }
 
-          ixstart++;
+          if (ixstart < sh_sizes[1]) {
+            while (ixstart + 1 <= sh_sizes[1]) {
+              if (sh_data[ixstart] > mtmp) {
+                mtmp = sh_data[ixstart];
+                idx = ixstart + 1;
+              }
+
+              ixstart++;
+            }
+          }
         }
+
+        /* 'measureFreqXcorr:34' if ~isempty(p) */
+        /* 'measureFreqXcorr:35' if p < 4 */
+        if (idx < 4) {
+          /* 'measureFreqXcorr:36' p = 4; */
+          idx = 4;
+        } else {
+          if (idx > (uint16_T)((uint32_T)analizeTime - 3U)) {
+            /* 'measureFreqXcorr:37' elseif p > analizeTime-3 */
+            /* 'measureFreqXcorr:38' p = double(analizeTime)-3; */
+            idx = analizeTime - 3;
+          }
+        }
+
+        /* 'measureFreqXcorr:41' idx = p+(-3:3); */
+        /* 'measureFreqXcorr:43' PP = polyfit(idx, sh(idx), 2); */
+        for (i0 = 0; i0 < 7; i0++) {
+          b_idx = (real_T)idx + (-3.0 + (real_T)i0);
+          sh[i0] = sh_data[(int32_T)b_idx - 1];
+          c_idx[i0] = b_idx;
+        }
+
+        polyfit(c_idx, sh, PP);
+
+        /* 'measureFreqXcorr:44' PZ = -PP(2)/2/PP(1); */
+        PZ = b_mrdivide(mrdivide(-PP[1], 2.0), PP[0]);
+
+        /* 'measureFreqXcorr:46' if (PZ>0) */
+        if (PZ > 0.0F) {
+          /* 'measureFreqXcorr:47' F = single(real(Fs/(PZ-1))); */
+          *F = b_mrdivide(Fs, PZ - 1.0F);
+        } else {
+          /* 'measureFreqXcorr:48' else */
+          /* 'measureFreqXcorr:49' F = single(0*Fs); */
+          *F = 0.0F * Fs;
+        }
+
+        /* 'measureFreqXcorr:51' snr = abs(M); */
+        *snr = (real32_T)fabs(mtmp);
       }
     }
-
-    /* 'measureFreqXcorr:22' if ~isempty(p) */
-    /* 'measureFreqXcorr:23' if p < 4 */
-    if (k < 4) {
-      /* 'measureFreqXcorr:24' p = 4; */
-      k = 4;
-    } else {
-      if (k > (uint16_T)((uint32_T)analizeTime - 3U)) {
-        /* 'measureFreqXcorr:25' elseif p > analizeTime-3 */
-        /* 'measureFreqXcorr:26' p = double(analizeTime)-3; */
-        k = analizeTime - 3;
-      }
-    }
-
-    /* 'measureFreqXcorr:29' idx = p+(-3:3); */
-    /* 'measureFreqXcorr:31' PP = polyfit(idx, sh(idx), 2); */
-    for (i0 = 0; i0 < 7; i0++) {
-      b_idx = (real_T)k + (-3.0 + (real_T)i0);
-      sh[i0] = sh_data[(int32_T)b_idx - 1];
-      c_idx[i0] = b_idx;
-    }
-
-    polyfit(c_idx, sh, PP);
-
-    /* 'measureFreqXcorr:32' PZ = -PP(2)/2/PP(1); */
-    PZ = b_mrdivide(mrdivide(-PP[1], 2.0), PP[0]);
-
-    /* 'measureFreqXcorr:34' if (PZ>0) */
-    if (PZ > 0.0F) {
-      /* 'measureFreqXcorr:35' F = single(real(Fs/(PZ-1))); */
-      *F = b_mrdivide(Fs, PZ - 1.0F);
-    } else {
-      /* 'measureFreqXcorr:36' else */
-      /* 'measureFreqXcorr:37' F = single(0*Fs); */
-      *F = 0.0F * Fs;
-    }
-
-    /* 'measureFreqXcorr:39' snr = abs(M); */
-    *snr = (real32_T)fabs(mtmp);
   }
 }
 
