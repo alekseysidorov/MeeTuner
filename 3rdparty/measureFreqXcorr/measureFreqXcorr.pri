@@ -3,7 +3,7 @@
 ######################################################################
 
 # Input
-<<<<<<< HEAD
+#<<<<<<< HEAD
 HEADERS += $$PWD/abs.h \
            $$PWD/measureFreqXcorr.h \
            $$PWD/measureFreqXcorr_types.h \
@@ -26,7 +26,7 @@ HEADERS += $$PWD/abs.h \
            $$PWD/getNote.h \
            $$PWD/fft.h \
            $$PWD/diff.h
-=======
+#=======
 #HEADERS += $$PWD/abs.h \
 #		   $$PWD/$$PWD/fft.h \
 #           $$PWD/$$PWD/ifft.h \
@@ -50,7 +50,7 @@ HEADERS += $$PWD/abs.h \
 #		   $$PWD/getNote.h \
 #		   $$PWD/fft.h \
 #		   $$PWD/diff.h
->>>>>>> 4386647f3272e93fb3caafa58138ad1bb9fecf43
+#>>>>>>> 4386647f3272e93fb3caafa58138ad1bb9fecf43
 
 SOURCES += $$PWD/abs.cpp \
            $$PWD/fft.cpp \
@@ -60,7 +60,7 @@ SOURCES += $$PWD/abs.cpp \
            $$PWD/power.cpp \
            $$PWD/rt_nonfinite.cpp \
            $$PWD/rtGetInf.cpp \
-<<<<<<< HEAD
+#<<<<<<< HEAD
            $$PWD/rtGetNaN.cpp \
            $$PWD/polyfit.cpp \
            $$PWD/getNote_terminate.cpp \
@@ -68,14 +68,14 @@ SOURCES += $$PWD/abs.cpp \
            $$PWD/getNote_data.cpp \
            $$PWD/getNote.cpp \
            $$PWD/diff.cpp
-=======
+#=======
 		   $$PWD/rtGetNaN.cpp \
 		   $$PWD/getNote_terminate.cpp \
 		   $$PWD/getNote_initialize.cpp \
 		   $$PWD/getNote_data.cpp \
 		   $$PWD/getNote.cpp \
 		   $$PWD/diff.cpp
->>>>>>> 4386647f3272e93fb3caafa58138ad1bb9fecf43
+#>>>>>>> 4386647f3272e93fb3caafa58138ad1bb9fecf43
 
 INCLUDEPATH += $$PWD
 DEPENDPATH  += $$PWD
