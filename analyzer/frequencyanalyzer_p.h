@@ -1,7 +1,7 @@
 #ifndef FREQUENCYANALYZER_P_H
 #define FREQUENCYANALYZER_P_H
 #include "frequencyanalyzer.h"
-#include "measureFreqXcorr.h"
+#include "getNote.h"
 
 #include <QAudioDeviceInfo>
 #include <QAudioInput>
@@ -12,6 +12,7 @@
 
 static const int frameSize = 8192;
 static const int sampleSize = 8192/sizeof(int32_T)*sizeof(int);
+static const uint16_T analyzeTime = frameSize;
 
 class FrequencyAnalyzer;
 class FrequencyAnalyzerPrivate
@@ -43,7 +44,9 @@ public:
 
             real32_T snr;
             creal32_T w[frameSize];
-            measureFreqXcorr(s, sampling, &frequency, &snr, w);
+            int32_T w_sizes[2];
+
+            measureFreqXcorr(s, analyzeTime, sampling, &frequency, &snr, w, w_sizes);
             qDebug() << buffer.count() << frequency << snr;
 
             emit q_func()->currentFrequencyChanged(frequency);

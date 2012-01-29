@@ -1,3 +1,4 @@
 [submodule "qml/MeeTuner/components"]
 	path = qml/MeeTuner/components
 	url = git@github.com:gorthauer/qml-components.git
+	branch = master

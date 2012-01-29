@@ -37,7 +37,9 @@ include(3rdparty/3rdparty.pri)
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    analyzer/frequencyanalyzer.cpp
+    analyzer/frequencyanalyzer.cpp \
+    analyzer/noteanalyzer.cpp
+
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -57,4 +59,6 @@ OTHER_FILES += \
 
 HEADERS += \
     analyzer/frequencyanalyzer_p.h \
-    analyzer/frequencyanalyzer.h
+    analyzer/frequencyanalyzer.h \
+    analyzer/noteanalyzer_p.h \
+    analyzer/noteanalyzer.h
