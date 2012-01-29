@@ -3,7 +3,7 @@
  *
  * Code generation for function 'getNote'
  *
- * C source code generated on: Sun Jan 29 22:55:36 2012
+ * C source code generated on: Mon Jan 30 00:39:15 2012
  *
  */
 
@@ -29,8 +29,6 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
 static real32_T b_mrdivide(real32_T A, real32_T B);
 static void c_mrdivide(const creal32_T A_data[65535], const int32_T A_sizes[2],
   const creal32_T B, creal32_T y_data[65535], int32_T y_sizes[2]);
-static void diff(const boolean_T x_data[65535], const int32_T x_sizes[2], real_T
-                 y_data[65534], int32_T y_sizes[2]);
 static real32_T eml_div(real32_T x, real_T y);
 static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
                     int32_T y_sizes[1]);
@@ -69,7 +67,7 @@ static void b_abs(const creal32_T x_data[65535], const int32_T x_sizes[2],
 
   y_sizes[0] = 1;
   y_sizes[1] = uv0[1];
-  for (k = 0; k <= x_sizes[1] - 1; k++) {
+  for (k = 0; k <= (x_sizes[1] - 1); k++) {
     y_data[k] = eml_scalar_abs(x_data[k]);
   }
 }
@@ -82,6 +80,7 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
 {
   int32_T nd2;
   int32_T b_n;
+  uint32_T ju;
   int32_T nRows;
   int32_T nRowsM1;
   int32_T ixDelta;
@@ -95,7 +94,6 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
   static real32_T sintab_data[32769];
   int32_T ix;
   int32_T chanStart;
-  uint32_T ju;
   int32_T i;
   uint32_T c_n;
   boolean_T tst;
@@ -105,7 +103,7 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
   int32_T iheight;
   int32_T ihi;
   y_sizes[0] = (int32_T)n;
-  if (n > (uint32_T)x_sizes[0]) {
+  if (n > ((uint32_T)x_sizes[0])) {
     nd2 = y_sizes[0];
     nd2--;
     for (b_n = 0; b_n <= nd2; b_n++) {
@@ -116,7 +114,12 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
 
   if (x_sizes[0] == 0) {
   } else {
-    nRows = (int32_T)n;
+    ju = n;
+    if (ju > 2147483647U) {
+      ju = 2147483647U;
+    }
+
+    nRows = (int32_T)ju;
     if (x_sizes[0] > nRows) {
       nd2 = nRows;
     } else {
@@ -125,24 +128,24 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
 
     nRowsM1 = nd2 - 1;
     nd2 = x_sizes[0] - nRowsM1;
-    ixDelta = 1 >= nd2 ? 1 : nd2;
-    nRowsD2 = (nRows + (nRows < 0)) >> 1;
-    nRowsD4 = (nRowsD2 + (nRowsD2 < 0)) >> 1;
-    lastChan = nRows * (x_sizes[0] / x_sizes[0] - 1);
-    e = 6.28318548F / (real32_T)nRows;
+    ixDelta = (1 >= nd2) ? 1 : nd2;
+    nRowsD2 = (nRows >> 1);
+    nRowsD4 = (nRowsD2 >> 1);
+    lastChan = nRows * ((x_sizes[0] / x_sizes[0]) - 1);
+    e = 6.28318548F / ((real32_T)nRows);
     costab1q_data[0] = 1.0F;
-    nd2 = (nRowsD4 + (nRowsD4 < 0)) >> 1;
+    nd2 = (nRowsD4 >> 1);
     for (k = 1; k <= nd2; k++) {
-      costab1q_data[k] = (real32_T)cos(e * (real32_T)k);
+      costab1q_data[k] = (real32_T)cos(e * ((real32_T)k));
     }
 
-    for (k = nd2 + 1; k <= nRowsD4 - 1; k++) {
-      costab1q_data[k] = (real32_T)sin(e * (real32_T)(nRowsD4 - k));
+    for (k = nd2 + 1; k <= (nRowsD4 - 1); k++) {
+      costab1q_data[k] = (real32_T)sin(e * ((real32_T)(nRowsD4 - k)));
     }
 
     costab1q_data[nRowsD4] = 0.0F;
     b_n = nRowsD4;
-    nd2 = b_n << 1;
+    nd2 = (b_n << 1);
     costab_data[0] = 1.0F;
     sintab_data[0] = 0.0F;
     for (k = 1; k <= b_n; k++) {
@@ -168,10 +171,10 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
         while (tst) {
           c_n >>= 1U;
           ju ^= c_n;
-          tst = ((int32_T)(ju & c_n) == 0);
+          tst = (((int32_T)(ju & c_n)) == 0);
         }
 
-        nd2 = chanStart + (int32_T)ju;
+        nd2 = chanStart + ((int32_T)ju);
         ix++;
       }
 
@@ -180,7 +183,7 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
       ix += ixDelta;
       nd2 = chanStart + nRows;
       if (nRows > 1) {
-        for (i = chanStart; i <= nd2 - 2; i += 2) {
+        for (i = chanStart; i <= (nd2 - 2); i += 2) {
           e = y_data[i + 1].re;
           temp_im = y_data[i + 1].im;
           y_data[i + 1].re = y_data[i].re - y_data[i + 1].re;
@@ -213,10 +216,10 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
           i = nd2;
           ihi = nd2 + iheight;
           while (i < ihi) {
-            e = costab_data[b_n] * y_data[i + iDelta].re - sintab_data[b_n] *
-              y_data[i + iDelta].im;
-            temp_im = costab_data[b_n] * y_data[i + iDelta].im + sintab_data[b_n]
-              * y_data[i + iDelta].re;
+            e = (costab_data[b_n] * y_data[i + iDelta].re) - (sintab_data[b_n] *
+              y_data[i + iDelta].im);
+            temp_im = (costab_data[b_n] * y_data[i + iDelta].im) +
+              (sintab_data[b_n] * y_data[i + iDelta].re);
             y_data[i + iDelta].re = y_data[i].re - e;
             y_data[i + iDelta].im = y_data[i].im - temp_im;
             y_data[i].re += e;
@@ -237,7 +240,7 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
     }
 
     if (y_sizes[0] > 1) {
-      e = 1.0F / (real32_T)y_sizes[0];
+      e = 1.0F / ((real32_T)y_sizes[0]);
       nd2 = y_sizes[0] - 1;
       for (b_n = 0; b_n <= nd2; b_n++) {
         y_data[b_n].re *= e;
@@ -262,105 +265,54 @@ static void c_mrdivide(const creal32_T A_data[65535], const int32_T A_sizes[2],
   const creal32_T B, creal32_T y_data[65535], int32_T y_sizes[2])
 {
   int32_T loop_ub;
-  int32_T i4;
+  int32_T i3;
   real32_T brm;
   real32_T bim;
   real32_T d;
   y_sizes[0] = 1;
   y_sizes[1] = A_sizes[1];
-  loop_ub = A_sizes[0] * A_sizes[1] - 1;
-  for (i4 = 0; i4 <= loop_ub; i4++) {
+  loop_ub = (A_sizes[0] * A_sizes[1]) - 1;
+  for (i3 = 0; i3 <= loop_ub; i3++) {
     if (B.im == 0.0F) {
-      if (A_data[i4].im == 0.0F) {
-        y_data[i4].re = A_data[i4].re / B.re;
-        y_data[i4].im = 0.0F;
-      } else if (A_data[i4].re == 0.0F) {
-        y_data[i4].re = 0.0F;
-        y_data[i4].im = A_data[i4].im / B.re;
+      if (A_data[i3].im == 0.0F) {
+        y_data[i3].re = A_data[i3].re / B.re;
+        y_data[i3].im = 0.0F;
+      } else if (A_data[i3].re == 0.0F) {
+        y_data[i3].re = 0.0F;
+        y_data[i3].im = A_data[i3].im / B.re;
       } else {
-        y_data[i4].re = A_data[i4].re / B.re;
-        y_data[i4].im = A_data[i4].im / B.re;
+        y_data[i3].re = A_data[i3].re / B.re;
+        y_data[i3].im = A_data[i3].im / B.re;
       }
     } else if (B.re == 0.0F) {
-      if (A_data[i4].re == 0.0F) {
-        y_data[i4].re = A_data[i4].im / B.im;
-        y_data[i4].im = 0.0F;
-      } else if (A_data[i4].im == 0.0F) {
-        y_data[i4].re = 0.0F;
-        y_data[i4].im = -(A_data[i4].re / B.im);
+      if (A_data[i3].re == 0.0F) {
+        y_data[i3].re = A_data[i3].im / B.im;
+        y_data[i3].im = 0.0F;
+      } else if (A_data[i3].im == 0.0F) {
+        y_data[i3].re = 0.0F;
+        y_data[i3].im = -(A_data[i3].re / B.im);
       } else {
-        y_data[i4].re = A_data[i4].im / B.im;
-        y_data[i4].im = -(A_data[i4].re / B.im);
+        y_data[i3].re = A_data[i3].im / B.im;
+        y_data[i3].im = -(A_data[i3].re / B.im);
       }
     } else {
       brm = (real32_T)fabs(B.re);
       bim = (real32_T)fabs(B.im);
       if (brm > bim) {
         bim = B.im / B.re;
-        d = B.re + bim * B.im;
-        y_data[i4].re = (A_data[i4].re + bim * A_data[i4].im) / d;
-        y_data[i4].im = (A_data[i4].im - bim * A_data[i4].re) / d;
+        d = B.re + (bim * B.im);
+        y_data[i3].re = (A_data[i3].re + (bim * A_data[i3].im)) / d;
+        y_data[i3].im = (A_data[i3].im - (bim * A_data[i3].re)) / d;
       } else if (bim == brm) {
-        bim = B.re > 0.0F ? 0.5F : -0.5F;
-        d = B.im > 0.0F ? 0.5F : -0.5F;
-        y_data[i4].re = (A_data[i4].re * bim + A_data[i4].im * d) / brm;
-        y_data[i4].im = (A_data[i4].im * bim - A_data[i4].re * d) / brm;
+        bim = (B.re > 0.0F) ? 0.5F : -0.5F;
+        d = (B.im > 0.0F) ? 0.5F : -0.5F;
+        y_data[i3].re = ((A_data[i3].re * bim) + (A_data[i3].im * d)) / brm;
+        y_data[i3].im = ((A_data[i3].im * bim) - (A_data[i3].re * d)) / brm;
       } else {
         bim = B.re / B.im;
-        d = B.im + bim * B.re;
-        y_data[i4].re = (bim * A_data[i4].re + A_data[i4].im) / d;
-        y_data[i4].im = (bim * A_data[i4].im - A_data[i4].re) / d;
-      }
-    }
-  }
-}
-
-/*
- *
- */
-static void diff(const boolean_T x_data[65535], const int32_T x_sizes[2], real_T
-                 y_data[65534], int32_T y_sizes[2])
-{
-  int32_T tmp2;
-  uint16_T ySize[2];
-  int8_T y1_data[65534];
-  int32_T ixLead;
-  int32_T iyLead;
-  int32_T work_data_idx_0;
-  int32_T m;
-  int32_T tmp1;
-  if (x_sizes[1] == 0) {
-    y_sizes[0] = 1;
-    y_sizes[1] = 0;
-  } else {
-    tmp2 = x_sizes[1] - 1;
-    tmp2 = tmp2 <= 1 ? tmp2 : 1;
-    if (tmp2 < 1) {
-      y_sizes[0] = 0;
-      y_sizes[1] = 0;
-    } else {
-      for (tmp2 = 0; tmp2 < 2; tmp2++) {
-        ySize[tmp2] = (uint16_T)x_sizes[tmp2];
-      }
-
-      ySize[1] = (uint16_T)(x_sizes[1] - 1);
-      ixLead = 1;
-      iyLead = 0;
-      work_data_idx_0 = x_data[0];
-      for (m = 2; m <= x_sizes[1]; m++) {
-        tmp2 = work_data_idx_0;
-        work_data_idx_0 = x_data[ixLead];
-        tmp1 = x_data[ixLead] - tmp2;
-        ixLead++;
-        y1_data[iyLead] = (int8_T)tmp1;
-        iyLead++;
-      }
-
-      y_sizes[0] = 1;
-      y_sizes[1] = ySize[1];
-      tmp1 = ySize[1] - 1;
-      for (tmp2 = 0; tmp2 <= tmp1; tmp2++) {
-        y_data[tmp2] = (real_T)y1_data[tmp2];
+        d = B.im + (bim * B.re);
+        y_data[i3].re = ((bim * A_data[i3].re) + A_data[i3].im) / d;
+        y_data[i3].im = ((bim * A_data[i3].im) - A_data[i3].re) / d;
       }
     }
   }
@@ -371,7 +323,7 @@ static void diff(const boolean_T x_data[65535], const int32_T x_sizes[2], real_T
  */
 static real32_T eml_div(real32_T x, real_T y)
 {
-  return x / (real32_T)y;
+  return x / ((real32_T)y);
 }
 
 /*
@@ -383,6 +335,7 @@ static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
   uint32_T sz[2];
   int32_T nd2;
   int32_T b_n;
+  uint32_T ju;
   int32_T nRows;
   int32_T minval;
   int32_T ixDelta;
@@ -394,7 +347,6 @@ static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
   static real32_T costab_data[32769];
   static real32_T sintab_data[32769];
   int32_T ix;
-  uint32_T ju;
   int32_T i;
   uint32_T c_n;
   boolean_T tst;
@@ -404,7 +356,7 @@ static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
   int32_T iheight;
   int32_T ihi;
   for (nd2 = 0; nd2 < 2; nd2++) {
-    sz[nd2] = (uint32_T)(8192 + -8191 * nd2);
+    sz[nd2] = (uint32_T)(8192 + (-8191 * nd2));
   }
 
   sz[0] = n;
@@ -418,7 +370,12 @@ static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
     }
   }
 
-  nRows = (int32_T)n;
+  ju = n;
+  if (ju > 2147483647U) {
+    ju = 2147483647U;
+  }
+
+  nRows = (int32_T)ju;
   if (8192 > nRows) {
     minval = nRows;
   } else {
@@ -426,23 +383,23 @@ static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
   }
 
   nd2 = 8193 - minval;
-  ixDelta = 1 >= nd2 ? 1 : nd2;
-  nRowsD2 = (nRows + (nRows < 0)) >> 1;
-  nRowsD4 = (nRowsD2 + (nRowsD2 < 0)) >> 1;
-  e = 6.28318548F / (real32_T)nRows;
+  ixDelta = (1 >= nd2) ? 1 : nd2;
+  nRowsD2 = (nRows >> 1);
+  nRowsD4 = (nRowsD2 >> 1);
+  e = 6.28318548F / ((real32_T)nRows);
   costab1q_data[0] = 1.0F;
-  nd2 = (nRowsD4 + (nRowsD4 < 0)) >> 1;
+  nd2 = (nRowsD4 >> 1);
   for (k = 1; k <= nd2; k++) {
-    costab1q_data[k] = (real32_T)cos(e * (real32_T)k);
+    costab1q_data[k] = (real32_T)cos(e * ((real32_T)k));
   }
 
-  for (k = nd2 + 1; k <= nRowsD4 - 1; k++) {
-    costab1q_data[k] = (real32_T)sin(e * (real32_T)(nRowsD4 - k));
+  for (k = nd2 + 1; k <= (nRowsD4 - 1); k++) {
+    costab1q_data[k] = (real32_T)sin(e * ((real32_T)(nRowsD4 - k)));
   }
 
   costab1q_data[nRowsD4] = 0.0F;
   b_n = nRowsD4;
-  nd2 = b_n << 1;
+  nd2 = (b_n << 1);
   costab_data[0] = 1.0F;
   sintab_data[0] = 0.0F;
   for (k = 1; k <= b_n; k++) {
@@ -460,7 +417,7 @@ static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
   while ((nRows > 0) && (b_n <= 0)) {
     ju = 0U;
     nd2 = 0;
-    for (i = 1; i <= minval - 1; i++) {
+    for (i = 1; i <= (minval - 1); i++) {
       y_data[nd2].re = x[ix];
       y_data[nd2].im = 0.0F;
       c_n = n;
@@ -468,7 +425,7 @@ static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
       while (tst) {
         c_n >>= 1U;
         ju ^= c_n;
-        tst = ((int32_T)(ju & c_n) == 0);
+        tst = (((int32_T)(ju & c_n)) == 0);
       }
 
       nd2 = (int32_T)ju;
@@ -479,7 +436,7 @@ static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
     y_data[nd2].im = 0.0F;
     ix += ixDelta;
     if (nRows > 1) {
-      for (i = 0; i <= nRows - 2; i += 2) {
+      for (i = 0; i <= (nRows - 2); i += 2) {
         e = y_data[i + 1].re;
         temp_im = y_data[i + 1].im;
         y_data[i + 1].re = y_data[i].re - y_data[i + 1].re;
@@ -509,10 +466,10 @@ static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
         i = nd2;
         ihi = nd2 + iheight;
         while (i < ihi) {
-          e = costab_data[b_n] * y_data[i + iDelta].re - sintab_data[b_n] *
-            y_data[i + iDelta].im;
-          temp_im = costab_data[b_n] * y_data[i + iDelta].im + sintab_data[b_n] *
-            y_data[i + iDelta].re;
+          e = (costab_data[b_n] * y_data[i + iDelta].re) - (sintab_data[b_n] *
+            y_data[i + iDelta].im);
+          temp_im = (costab_data[b_n] * y_data[i + iDelta].im) +
+            (sintab_data[b_n] * y_data[i + iDelta].re);
           y_data[i + iDelta].re = y_data[i].re - e;
           y_data[i + iDelta].im = y_data[i].im - temp_im;
           y_data[i].re += e;
@@ -546,7 +503,7 @@ static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
   int32_T colbottom;
   int32_T exitg1;
   int32_T iy;
-  int32_T i5;
+  int32_T i4;
   int32_T ix;
   real_T c;
   int32_T ia;
@@ -561,7 +518,7 @@ static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
     lastc = n;
     exitg2 = 0U;
     while ((exitg2 == 0U) && (lastc > 0)) {
-      i = ic0 + (lastc - 1) * 7;
+      i = ic0 + ((lastc - 1) * 7);
       colbottom = (i + lastv) - 1;
       do {
         exitg1 = 0U;
@@ -590,17 +547,17 @@ static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
     if (lastc == 0) {
     } else {
       i = lastc - 1;
-      for (iy = 1; iy <= i + 1; iy++) {
+      for (iy = 1; iy <= (i + 1); iy++) {
         work[iy - 1] = 0.0;
       }
 
       iy = 0;
-      i5 = ic0 + 7 * i;
-      for (i = ic0; i <= i5; i += 7) {
+      i4 = ic0 + (7 * i);
+      for (i = ic0; i <= i4; i += 7) {
         ix = iv0;
         c = 0.0;
         colbottom = i + lastv;
-        for (ia = i; ia <= colbottom - 1; ia++) {
+        for (ia = i; ia <= (colbottom - 1); ia++) {
           c += C[ia - 1] * C[ix - 1];
           ix++;
         }
@@ -610,16 +567,16 @@ static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
       }
     }
 
-    if (-tau == 0.0) {
+    if ((-tau) == 0.0) {
     } else {
       i = ic0 - 1;
       colbottom = 0;
       for (ia = 1; ia <= lastc; ia++) {
         if (work[colbottom] != 0.0) {
-          c = work[colbottom] * -tau;
+          c = work[colbottom] * (-tau);
           ix = iv0;
-          i5 = lastv + i;
-          for (iy = i; iy + 1 <= i5; iy++) {
+          i4 = lastv + i;
+          for (iy = i; (iy + 1) <= i4; iy++) {
             C[iy] += C[ix - 1] * c;
             ix++;
           }
@@ -655,7 +612,7 @@ static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
   int32_T i_i;
   int32_T ix;
   real32_T wj;
-  memcpy((void *)&b_A[0], (void *)&A[0], 21U * sizeof(real_T));
+  memcpy((void *)(&b_A[0]), (void *)(&A[0]), 21U * (sizeof(real_T)));
   for (nmip1 = 0; nmip1 < 3; nmip1++) {
     jpvt[nmip1] = (int8_T)(1 + nmip1);
     work[nmip1] = 0.0;
@@ -665,11 +622,11 @@ static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
   for (pvt = 0; pvt < 3; pvt++) {
     atmp = 0.0;
     tol = 2.2250738585072014E-308;
-    for (nmip1 = k; nmip1 <= k + 6; nmip1++) {
+    for (nmip1 = k; nmip1 <= (k + 6); nmip1++) {
       xnorm = fabs(A[nmip1 - 1]);
       if (xnorm > tol) {
         a = tol / xnorm;
-        atmp = 1.0 + atmp * a * a;
+        atmp = 1.0 + ((atmp * a) * a);
         tol = xnorm;
       } else {
         a = xnorm / tol;
@@ -684,7 +641,7 @@ static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
   }
 
   for (i = 0; i < 3; i++) {
-    i_i = i + i * 7;
+    i_i = i + (i * 7);
     nmip1 = 3 - i;
     pvt = 0;
     if (nmip1 > 1) {
@@ -701,7 +658,7 @@ static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
     }
 
     pvt += i;
-    if (pvt + 1 != i + 1) {
+    if ((pvt + 1) != (i + 1)) {
       ix = 7 * pvt;
       nmip1 = 7 * i;
       for (k = 0; k < 7; k++) {
@@ -727,10 +684,10 @@ static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
       a = fabs(b_A[i_i]);
       if (a < xnorm) {
         a /= xnorm;
-        xnorm *= sqrt(a * a + 1.0);
+        xnorm *= sqrt((a * a) + 1.0);
       } else if (a > xnorm) {
         tol = xnorm / a;
-        xnorm = sqrt(tol * tol + 1.0) * a;
+        xnorm = sqrt((tol * tol) + 1.0) * a;
       } else if (rtIsNaN(xnorm)) {
       } else {
         xnorm = a * 1.4142135623730951;
@@ -757,10 +714,10 @@ static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
         a = fabs(atmp);
         if (a < xnorm) {
           a /= xnorm;
-          xnorm *= sqrt(a * a + 1.0);
+          xnorm *= sqrt((a * a) + 1.0);
         } else if (a > xnorm) {
           tol = xnorm / a;
-          xnorm = sqrt(tol * tol + 1.0) * a;
+          xnorm = sqrt((tol * tol) + 1.0) * a;
         } else if (rtIsNaN(xnorm)) {
         } else {
           xnorm = a * 1.4142135623730951;
@@ -798,26 +755,26 @@ static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
 
     tau[i] = tol;
     b_A[i_i] = atmp;
-    if (i + 1 < 3) {
+    if ((i + 1) < 3) {
       atmp = b_A[i_i];
       b_A[i_i] = 1.0;
-      eml_matlab_zlarf(7 - i, 2 - i, i_i + 1, tau[i], b_A, (i + (i + 1) * 7) + 1,
-                       work);
+      eml_matlab_zlarf(7 - i, 2 - i, i_i + 1, tau[i], b_A, (i + ((i + 1) * 7)) +
+                       1, work);
       b_A[i_i] = atmp;
     }
 
-    for (pvt = i + 1; pvt + 1 < 4; pvt++) {
+    for (pvt = i + 1; (pvt + 1) < 4; pvt++) {
       if (vn1[pvt] != 0.0) {
-        xnorm = fabs(b_A[i + 7 * pvt]) / vn1[pvt];
+        xnorm = fabs(b_A[i + (7 * pvt)]) / vn1[pvt];
         atmp = xnorm * xnorm;
-        xnorm = 1.0 - xnorm * xnorm;
-        if (1.0 - atmp < 0.0) {
+        xnorm = 1.0 - (xnorm * xnorm);
+        if ((1.0 - atmp) < 0.0) {
           xnorm = 0.0;
         }
 
         tol = vn1[pvt] / vn2[pvt];
-        if (xnorm * (tol * tol) <= 1.4901161193847656E-8) {
-          ix = (i + 7 * pvt) + 2;
+        if ((xnorm * (tol * tol)) <= 1.4901161193847656E-8) {
+          ix = (i + (7 * pvt)) + 2;
           atmp = 0.0;
           tol = 2.2250738585072014E-308;
           nmip1 = (ix - i) + 5;
@@ -825,7 +782,7 @@ static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
             xnorm = fabs(b_A[ix - 1]);
             if (xnorm > tol) {
               a = tol / xnorm;
-              atmp = 1.0 + atmp * a * a;
+              atmp = 1.0 + ((atmp * a) * a);
               tol = xnorm;
             } else {
               a = xnorm / tol;
@@ -845,10 +802,10 @@ static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
     }
   }
 
-  tol = 7.0 * fabs(b_A[0]) * 2.2204460492503131E-16;
+  tol = (7.0 * fabs(b_A[0])) * 2.2204460492503131E-16;
   *rankR = 0.0;
   k = 0;
-  while ((k < 3) && (!(fabs(b_A[k + 7 * k]) <= tol))) {
+  while ((k < 3) && (!(fabs(b_A[k + (7 * k)]) <= tol))) {
     (*rankR)++;
     k++;
   }
@@ -860,17 +817,17 @@ static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
   for (pvt = 0; pvt < 3; pvt++) {
     if (tau[pvt] != 0.0) {
       wj = B[pvt];
-      for (i = 0; i <= 5 - pvt; i++) {
+      for (i = 0; i <= (5 - pvt); i++) {
         nmip1 = (pvt + i) + 1;
-        wj += (real32_T)b_A[nmip1 + 7 * pvt] * B[nmip1];
+        wj += ((real32_T)b_A[nmip1 + (7 * pvt)]) * B[nmip1];
       }
 
       wj *= (real32_T)tau[pvt];
       if (wj != 0.0F) {
         B[pvt] -= wj;
-        for (i = 0; i <= 5 - pvt; i++) {
+        for (i = 0; i <= (5 - pvt); i++) {
           nmip1 = (pvt + i) + 1;
-          B[nmip1] -= (real32_T)b_A[nmip1 + 7 * pvt] * wj;
+          B[nmip1] -= ((real32_T)b_A[nmip1 + (7 * pvt)]) * wj;
         }
       }
     }
@@ -881,10 +838,10 @@ static void eml_qrsolve(const real_T A[21], real32_T B[7], boolean_T
   }
 
   for (pvt = 0; pvt < 3; pvt++) {
-    Y[jpvt[2 - pvt] - 1] = eml_div(Y[jpvt[2 - pvt] - 1], b_A[(7 * (2 - pvt) -
+    Y[jpvt[2 - pvt] - 1] = eml_div(Y[jpvt[2 - pvt] - 1], b_A[((7 * (2 - pvt)) -
       pvt) + 2]);
-    for (i = 0; i <= 1 - pvt; i++) {
-      Y[jpvt[i] - 1] -= Y[jpvt[2 - pvt] - 1] * (real32_T)b_A[i + 7 * (2 - pvt)];
+    for (i = 0; i <= (1 - pvt); i++) {
+      Y[jpvt[i] - 1] -= Y[jpvt[2 - pvt] - 1] * ((real32_T)b_A[i + (7 * (2 - pvt))]);
     }
   }
 }
@@ -900,10 +857,10 @@ static real32_T eml_scalar_abs(const creal32_T x)
   y = (real32_T)fabs(x.im);
   if (a < y) {
     a /= y;
-    y *= (real32_T)sqrt(a * a + 1.0F);
+    y *= (real32_T)sqrt((a * a) + 1.0F);
   } else if (a > y) {
     y /= a;
-    y = (real32_T)sqrt(y * y + 1.0F) * a;
+    y = ((real32_T)sqrt((y * y) + 1.0F)) * a;
   } else if (rtIsNaNF(y)) {
   } else {
     y = a * 1.41421354F;
@@ -919,9 +876,9 @@ static void eml_scalexp_alloc(const real32_T varargin_1_data[65535], const
   int32_T varargin_1_sizes[2], real32_T z_data[65535], int32_T z_sizes[2])
 {
   uint16_T uv1[2];
-  int32_T i2;
-  for (i2 = 0; i2 < 2; i2++) {
-    uv1[i2] = (uint16_T)varargin_1_sizes[i2];
+  int32_T i1;
+  for (i1 = 0; i1 < 2; i1++) {
+    uv1[i1] = (uint16_T)varargin_1_sizes[i1];
   }
 
   z_sizes[0] = 1;
@@ -950,7 +907,7 @@ static real_T eml_xnrm2(int32_T n, const real_T x[21], int32_T ix0)
       absxk = fabs(x[k - 1]);
       if (absxk > scale) {
         t = scale / absxk;
-        y = 1.0 + y * t * t;
+        y = 1.0 + ((y * t) * t);
         scale = absxk;
       } else {
         t = absxk / scale;
@@ -972,13 +929,13 @@ static void fft(const real32_T x[8192], uint16_T varargin_1, creal32_T y_data
 {
   int32_T y1_sizes;
   static creal32_T y1_data[65535];
-  int32_T i1;
-  eml_fft(x, (uint32_T)varargin_1, y1_data, *(int32_T (*)[1])&y1_sizes);
+  int32_T i0;
+  eml_fft(x, (uint32_T)varargin_1, y1_data, *((int32_T (*)[1])(&y1_sizes)));
   y_sizes[0] = 1;
   y_sizes[1] = y1_sizes;
   y1_sizes--;
-  for (i1 = 0; i1 <= y1_sizes; i1++) {
-    y_data[i1] = y1_data[i1];
+  for (i0 = 0; i0 <= y1_sizes; i0++) {
+    y_data[i0] = y1_data[i0];
   }
 }
 
@@ -991,21 +948,21 @@ static void ifft(const real32_T x_data[65535], const int32_T x_sizes[2],
   static real32_T b_x_data[65535];
   int32_T b_x_sizes;
   int32_T y1_sizes;
-  int32_T i3;
+  int32_T i2;
   static creal32_T y1_data[65535];
   b_x_sizes = x_sizes[1];
   y1_sizes = x_sizes[1] - 1;
-  for (i3 = 0; i3 <= y1_sizes; i3++) {
-    b_x_data[i3] = x_data[i3];
+  for (i2 = 0; i2 <= y1_sizes; i2++) {
+    b_x_data[i2] = x_data[i2];
   }
 
-  b_eml_fft(b_x_data, *(int32_T (*)[1])&b_x_sizes, (uint32_T)x_sizes[1], y1_data,
-            *(int32_T (*)[1])&y1_sizes);
+  b_eml_fft(b_x_data, *((int32_T (*)[1])(&b_x_sizes)), (uint32_T)x_sizes[1],
+            y1_data, *((int32_T (*)[1])(&y1_sizes)));
   y_sizes[0] = 1;
   y_sizes[1] = y1_sizes;
   y1_sizes--;
-  for (i3 = 0; i3 <= y1_sizes; i3++) {
-    y_data[i3] = y1_data[i3];
+  for (i2 = 0; i2 <= y1_sizes; i2++) {
+    y_data[i2] = y1_data[i2];
   }
 }
 
@@ -1014,7 +971,7 @@ static void ifft(const real32_T x_data[65535], const int32_T x_sizes[2],
  */
 static real32_T mrdivide(real32_T A, real_T B)
 {
-  return A / (real32_T)B;
+  return A / ((real32_T)B);
 }
 
 /*
@@ -1048,7 +1005,7 @@ static void power(const real32_T a_data[65535], const int32_T a_sizes[2],
 {
   int32_T k;
   eml_scalexp_alloc(a_data, a_sizes, y_data, y_sizes);
-  for (k = 0; k <= y_sizes[1] - 1; k++) {
+  for (k = 0; k <= (y_sizes[1] - 1); k++) {
     y_data[k] = rt_powf_snf(a_data[k], 2.0F);
   }
 }
@@ -1058,7 +1015,7 @@ static real_T rt_powd_snf(real_T u0, real_T u1)
   real_T y;
   real_T d0;
   real_T d1;
-  if (rtIsNaN(u0) || rtIsNaN(u1)) {
+  if ((rtIsNaN(u0)) || (rtIsNaN(u1))) {
     y = rtNaN;
   } else {
     d0 = fabs(u0);
@@ -1104,7 +1061,7 @@ static real32_T rt_powf_snf(real32_T u0, real32_T u1)
   real32_T y;
   real32_T f0;
   real32_T f1;
-  if (rtIsNaNF(u0) || rtIsNaNF(u1)) {
+  if ((rtIsNaNF(u0)) || (rtIsNaNF(u1))) {
     y = ((real32_T)rtNaN);
   } else {
     f0 = (real32_T)fabs(u0);
@@ -1135,7 +1092,7 @@ static real32_T rt_powf_snf(real32_T u0, real32_T u1)
       y = u0 * u0;
     } else if ((u1 == 0.5F) && (u0 >= 0.0F)) {
       y = (real32_T)sqrt(u0);
-    } else if ((u0 < 0.0F) && (u1 > (real32_T)floor(u1))) {
+    } else if ((u0 < 0.0F) && (u1 > ((real32_T)floor(u1)))) {
       y = ((real32_T)rtNaN);
     } else {
       y = (real32_T)pow(u0, u1);
@@ -1148,8 +1105,8 @@ static real32_T rt_powf_snf(real32_T u0, real32_T u1)
 /*
  * function [noteFreq, noteError, noteName, noteOctave] = getNote(f)
  */
-void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T
-             noteName_data[3], int32_T noteName_sizes[2], real_T *noteOctave)
+void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T noteName
+             [3], real_T *noteOctave)
 {
   real32_T y[145];
   int32_T ixstart;
@@ -1160,22 +1117,36 @@ void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T
   real32_T fdbl;
   int32_T eint;
   real_T b_y;
-  static const char_T cv0[2] = { 'B', 'b' };
+  static const char_T cv0[3] = { 'A', ' ', ' ' };
 
-  static const char_T cv1[2] = { 'C', '#' };
+  static const char_T cv1[3] = { 'B', 'b', ' ' };
 
-  static const char_T cv2[2] = { 'E', 'b' };
+  static const char_T cv2[3] = { 'B', ' ', ' ' };
 
-  static const char_T cv3[2] = { 'F', '#' };
+  static const char_T cv3[3] = { 'C', ' ', ' ' };
 
-  static const char_T cv4[2] = { 'A', 'b' };
+  static const char_T cv4[3] = { 'C', '#', ' ' };
 
-  static const char_T cv5[3] = { 'N', 'a', 'N' };
+  static const char_T cv5[3] = { 'D', ' ', ' ' };
+
+  static const char_T cv6[3] = { 'E', 'b', ' ' };
+
+  static const char_T cv7[3] = { 'E', ' ', ' ' };
+
+  static const char_T cv8[3] = { 'F', ' ', ' ' };
+
+  static const char_T cv9[3] = { 'F', '#', ' ' };
+
+  static const char_T cv10[3] = { 'G', ' ', ' ' };
+
+  static const char_T cv11[3] = { 'A', 'b', ' ' };
+
+  static const char_T cv12[3] = { 'N', 'a', 'N' };
 
   /* 'getNote:3' if isempty(notes) */
   /* 'getNote:6' [~,n] = min(abs(notes-f)); */
   for (ixstart = 0; ixstart < 145; ixstart++) {
-    y[ixstart] = (real32_T)fabs((real32_T)notes[ixstart] - f);
+    y[ixstart] = (real32_T)fabs(((real32_T)notes[ixstart]) - f);
   }
 
   ixstart = 1;
@@ -1196,7 +1167,7 @@ void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T
   }
 
   if (ixstart < 145) {
-    while (ixstart + 1 < 146) {
+    while ((ixstart + 1) < 146) {
       if (y[ixstart] < mtmp) {
         mtmp = y[ixstart];
         itmp = ixstart;
@@ -1210,7 +1181,7 @@ void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T
   *noteFreq = notes[itmp];
 
   /* 'getNote:8' noteError = 100*log2(f/noteFreq)*12; */
-  fdbl = f / (real32_T)notes[itmp];
+  fdbl = f / ((real32_T)notes[itmp]);
   if (fdbl == 0.0F) {
     fdbl = ((real32_T)rtMinusInf);
   } else if (fdbl < 0.0F) {
@@ -1227,138 +1198,127 @@ void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T
       if (fdbl == 0.5F) {
         fdbl = mtmp - 1.0F;
       } else {
-        fdbl = (real32_T)log(fdbl) / 0.693147182F + mtmp;
+        fdbl = (((real32_T)log(fdbl)) / 0.693147182F) + mtmp;
       }
     }
   }
 
-  *noteError = 100.0F * fdbl * 12.0F;
+  *noteError = (100.0F * fdbl) * 12.0F;
 
   /* 'getNote:9' noteOctave = fix((n-1)/12)+1; */
-  b_y = ((real_T)(itmp + 1) - 1.0) / 12.0;
+  b_y = (((real_T)(itmp + 1)) - 1.0) / 12.0;
   if (b_y > 0.0) {
     ixstart = (int32_T)floor(b_y);
   } else {
     ixstart = 0;
   }
 
-  *noteOctave = (real_T)ixstart + 1.0;
+  *noteOctave = ((real_T)ixstart) + 1.0;
 
   /* 'getNote:11' switch mod(n-1,12)+1 */
-  switch ((itmp - (int32_T)floor(((real_T)(itmp + 1) - 1.0) / 12.0) * 12) + 1) {
+  switch ((itmp - (((int32_T)floor((((real_T)(itmp + 1)) - 1.0) / 12.0)) * 12))
+          + 1) {
    case 1:
     /* 'getNote:12' case 1 */
-    /* 'getNote:13' noteName = char('A'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 1;
-    noteName_data[0] = 'A';
+    /* 'getNote:13' noteName = char('A  '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv0[ixstart];
+    }
     break;
 
    case 2:
     /* 'getNote:14' case 2 */
-    /* 'getNote:15' noteName = char('Bb'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 2;
-    for (ixstart = 0; ixstart < 2; ixstart++) {
-      noteName_data[ixstart] = cv0[ixstart];
+    /* 'getNote:15' noteName = char('Bb '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv1[ixstart];
     }
     break;
 
    case 3:
     /* 'getNote:16' case 3 */
-    /* 'getNote:17' noteName = char('B'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 1;
-    noteName_data[0] = 'B';
+    /* 'getNote:17' noteName = char('B  '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv2[ixstart];
+    }
     break;
 
    case 4:
     /* 'getNote:18' case 4 */
-    /* 'getNote:19' noteName = char('C'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 1;
-    noteName_data[0] = 'C';
+    /* 'getNote:19' noteName = char('C  '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv3[ixstart];
+    }
     break;
 
    case 5:
     /* 'getNote:20' case 5 */
-    /* 'getNote:21' noteName = char('C#'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 2;
-    for (ixstart = 0; ixstart < 2; ixstart++) {
-      noteName_data[ixstart] = cv1[ixstart];
+    /* 'getNote:21' noteName = char('C# '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv4[ixstart];
     }
     break;
 
    case 6:
     /* 'getNote:22' case 6 */
-    /* 'getNote:23' noteName = char('D'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 1;
-    noteName_data[0] = 'D';
+    /* 'getNote:23' noteName = char('D  '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv5[ixstart];
+    }
     break;
 
    case 7:
     /* 'getNote:24' case 7 */
-    /* 'getNote:25' noteName = char('Eb'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 2;
-    for (ixstart = 0; ixstart < 2; ixstart++) {
-      noteName_data[ixstart] = cv2[ixstart];
+    /* 'getNote:25' noteName = char('Eb '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv6[ixstart];
     }
     break;
 
    case 8:
     /* 'getNote:26' case 8 */
-    /* 'getNote:27' noteName = char('E'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 1;
-    noteName_data[0] = 'E';
+    /* 'getNote:27' noteName = char('E  '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv7[ixstart];
+    }
     break;
 
    case 9:
     /* 'getNote:28' case 9 */
-    /* 'getNote:29' noteName = char('F'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 1;
-    noteName_data[0] = 'F';
+    /* 'getNote:29' noteName = char('F  '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv8[ixstart];
+    }
     break;
 
    case 10:
     /* 'getNote:30' case 10 */
-    /* 'getNote:31' noteName = char('F#'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 2;
-    for (ixstart = 0; ixstart < 2; ixstart++) {
-      noteName_data[ixstart] = cv3[ixstart];
+    /* 'getNote:31' noteName = char('F# '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv9[ixstart];
     }
     break;
 
    case 11:
     /* 'getNote:32' case 11 */
-    /* 'getNote:33' noteName = char('G'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 1;
-    noteName_data[0] = 'G';
+    /* 'getNote:33' noteName = char('G  '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv10[ixstart];
+    }
     break;
 
    case 12:
     /* 'getNote:34' case 12 */
-    /* 'getNote:35' noteName = char('Ab'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 2;
-    for (ixstart = 0; ixstart < 2; ixstart++) {
-      noteName_data[ixstart] = cv4[ixstart];
+    /* 'getNote:35' noteName = char('Ab '); */
+    for (ixstart = 0; ixstart < 3; ixstart++) {
+      noteName[ixstart] = cv11[ixstart];
     }
     break;
 
    default:
     /* 'getNote:36' otherwise */
     /* 'getNote:37' noteName = char('NaN'); */
-    noteName_sizes[0] = 1;
-    noteName_sizes[1] = 3;
     for (ixstart = 0; ixstart < 3; ixstart++) {
-      noteName_data[ixstart] = cv5[ixstart];
+      noteName[ixstart] = cv12[ixstart];
     }
     break;
   }
@@ -1421,358 +1381,137 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
                       int32_T w_sizes[2])
 {
   real32_T b_s[8192];
-  int32_T i0;
+  int32_T gorb;
   int32_T sh_sizes[2];
   static real32_T sh_data[65535];
   static real32_T b_sh_data[65535];
-  int32_T shd_sizes[2];
-  int32_T loop_ub;
+  int32_T b_sh_sizes[2];
+  int32_T i;
   static creal32_T c_sh_data[65535];
   static creal32_T d_sh_data[65535];
-  int32_T b_sh_sizes[2];
-  static boolean_T e_sh_data[65535];
   int32_T c_sh_sizes[2];
-  static real_T shd_data[65534];
-  static boolean_T poses_pos_data[65534];
-  boolean_T poses_neg_data[65534];
-  int32_T nx;
-  int32_T k;
-  int32_T idx;
-  int32_T ii_data[1];
-  int32_T ixstart;
-  boolean_T exitg4;
-  int32_T b_ii_data[1];
-  int32_T idx_start_data[1];
-  static int32_T c_ii_data[65534];
-  boolean_T exitg3;
-  boolean_T guard1 = FALSE;
-  static int32_T d_ii_data[65534];
-  static int32_T idx_ends_data[65534];
-  boolean_T x_data[1];
-  boolean_T exitg2;
-  static int32_T tmp_data[65533];
-  static int32_T b_tmp_data[65533];
-  static int32_T c_tmp_data[65535];
-  static int32_T d_tmp_data[65535];
-  real32_T mtmp;
-  boolean_T exitg1;
+  real32_T M;
+  int32_T p;
+  uint32_T qY;
   real32_T sh[7];
-  real_T b_idx;
-  real_T c_idx[7];
+  real_T idx[7];
   real32_T PP[3];
   real32_T PZ;
 
   /* 'measureFreqXcorr:2' F = single(0); */
-  *F = 0.0F;
-
   /* 'measureFreqXcorr:3' snr = single(0); */
-  *snr = 0.0F;
-
   /* 'measureFreqXcorr:5' w = fft(single(s), analizeTime); */
-  for (i0 = 0; i0 < 8192; i0++) {
-    b_s[i0] = (real32_T)s[i0];
+  for (gorb = 0; gorb < 8192; gorb++) {
+    b_s[gorb] = (real32_T)s[gorb];
   }
 
   fft(b_s, analizeTime, w_data, w_sizes);
 
   /* 'measureFreqXcorr:6' sh = ifft(abs(w).^2); */
   b_abs(w_data, w_sizes, sh_data, sh_sizes);
-  shd_sizes[0] = 1;
-  shd_sizes[1] = sh_sizes[1];
-  loop_ub = sh_sizes[0] * sh_sizes[1] - 1;
-  for (i0 = 0; i0 <= loop_ub; i0++) {
-    b_sh_data[i0] = sh_data[i0];
+  b_sh_sizes[0] = 1;
+  b_sh_sizes[1] = sh_sizes[1];
+  i = (sh_sizes[0] * sh_sizes[1]) - 1;
+  for (gorb = 0; gorb <= i; gorb++) {
+    b_sh_data[gorb] = sh_data[gorb];
   }
 
-  power(b_sh_data, shd_sizes, sh_data, sh_sizes);
-  ifft(sh_data, sh_sizes, c_sh_data, shd_sizes);
+  power(b_sh_data, b_sh_sizes, sh_data, sh_sizes);
+  ifft(sh_data, sh_sizes, c_sh_data, b_sh_sizes);
 
   /* 'measureFreqXcorr:7' sh = real(sh/sh(1)); */
-  b_sh_sizes[0] = 1;
-  b_sh_sizes[1] = shd_sizes[1];
-  loop_ub = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= loop_ub; i0++) {
-    d_sh_data[i0] = c_sh_data[i0];
-  }
-
-  c_mrdivide(d_sh_data, b_sh_sizes, c_sh_data[0], c_sh_data, shd_sizes);
-  sh_sizes[0] = 1;
-  sh_sizes[1] = shd_sizes[1];
-  loop_ub = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= loop_ub; i0++) {
-    sh_data[i0] = c_sh_data[i0].re;
-  }
-
-  /* 'measureFreqXcorr:8' shi = sh>th; */
-  /* 'measureFreqXcorr:9' shd = diff(shi); */
   c_sh_sizes[0] = 1;
-  c_sh_sizes[1] = sh_sizes[1];
-  loop_ub = sh_sizes[1] - 1;
-  for (i0 = 0; i0 <= loop_ub; i0++) {
-    e_sh_data[i0] = (sh_data[i0] > th);
+  c_sh_sizes[1] = b_sh_sizes[1];
+  i = (b_sh_sizes[0] * b_sh_sizes[1]) - 1;
+  for (gorb = 0; gorb <= i; gorb++) {
+    d_sh_data[gorb] = c_sh_data[gorb];
   }
 
-  diff(e_sh_data, c_sh_sizes, shd_data, shd_sizes);
-
-  /* 'measureFreqXcorr:10' poses_pos = shd>0; */
-  loop_ub = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= loop_ub; i0++) {
-    poses_pos_data[i0] = (shd_data[i0] > 0.0);
+  c_mrdivide(d_sh_data, c_sh_sizes, c_sh_data[0], c_sh_data, b_sh_sizes);
+  i = (b_sh_sizes[0] * b_sh_sizes[1]) - 1;
+  for (gorb = 0; gorb <= i; gorb++) {
+    sh_data[gorb] = c_sh_data[gorb].re;
   }
 
-  /* 'measureFreqXcorr:11' poses_neg = shd<0; */
-  loop_ub = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= loop_ub; i0++) {
-    poses_neg_data[i0] = (shd_data[i0] < 0.0);
-  }
+  /* 'measureFreqXcorr:9' [M,p] = max(sh); */
+  /* 'measureFreqXcorr:11' i = 2; */
+  i = 1;
 
-  /* 'measureFreqXcorr:12' idx_start = find(poses_pos, 1, 'first'); */
-  nx = shd_sizes[0] * shd_sizes[1];
-  k = 1 <= nx ? 1 : nx;
-  idx = 0;
-  ixstart = 1;
-  exitg4 = 0U;
-  while ((exitg4 == 0U) && (ixstart <= nx)) {
-    if (poses_pos_data[ixstart - 1]) {
-      idx = 1;
-      ii_data[0] = ixstart;
-      exitg4 = 1U;
-    } else {
-      ixstart++;
+  /* 'measureFreqXcorr:12' M = single(0); */
+  M = 0.0F;
+
+  /* 'measureFreqXcorr:13' p = 0; */
+  p = 0;
+
+  /* 'measureFreqXcorr:14' gorb = 0; */
+  gorb = 0;
+
+  /* 'measureFreqXcorr:15' while i < analizeTime && gorb < 2 */
+  while (((i + 1) < analizeTime) && (gorb < 2)) {
+    /* 'measureFreqXcorr:16' if sh(i-1) < th && sh(i) > th */
+    if ((sh_data[i - 1] < th) && (sh_data[i] > th)) {
+      /*  Прошли через порог снизу вверх */
+      /* 'measureFreqXcorr:17' gorb = gorb + 1; */
+      gorb++;
     }
+
+    /* 'measureFreqXcorr:20' if gorb>0 && sh(i)>M */
+    if ((gorb > 0) && (sh_data[i] > M)) {
+      /* 'measureFreqXcorr:21' M = sh(i); */
+      M = sh_data[i];
+
+      /* 'measureFreqXcorr:22' p = i; */
+      p = i + 1;
+    }
+
+    /* 'measureFreqXcorr:24' i = i + 1; */
+    i++;
   }
 
-  if (k == 1) {
-    if (idx == 0) {
-      k = 0;
-    }
+  /* 'measureFreqXcorr:27' if p < 4 */
+  if (p < 4) {
+    /* 'measureFreqXcorr:28' p = 4; */
+    p = 4;
   } else {
-    if (1 > idx) {
-      ixstart = -1;
-    } else {
-      ixstart = 0;
+    i = analizeTime;
+    qY = ((uint32_T)i) - 3U;
+    if (qY > ((uint32_T)i)) {
+      qY = 0U;
     }
 
-    i0 = 0;
-    while (i0 <= ixstart) {
-      b_ii_data[0] = ii_data[0];
-      i0 = 1;
-    }
-
-    k = ixstart + 1;
-    i0 = 0;
-    while (i0 <= ixstart) {
-      ii_data[0] = b_ii_data[0];
-      i0 = 1;
+    gorb = (int32_T)qY;
+    if (p > gorb) {
+      /* 'measureFreqXcorr:29' elseif p > analizeTime-3 */
+      /* 'measureFreqXcorr:30' p = double(analizeTime)-3; */
+      p = analizeTime - 3;
     }
   }
 
-  loop_ub = k - 1;
-  for (i0 = 0; i0 <= loop_ub; i0++) {
-    idx_start_data[i0] = ii_data[i0];
+  /* 'measureFreqXcorr:33' idx = p+(-3:3); */
+  /* 'measureFreqXcorr:35' PP = polyfit(idx, sh(idx), 2); */
+  for (gorb = 0; gorb < 7; gorb++) {
+    i = (p + gorb) - 3;
+    sh[gorb] = sh_data[i - 1];
+    idx[gorb] = (real_T)i;
   }
 
-  /* 'measureFreqXcorr:14' if isempty(idx_start) */
-  if (k == 0) {
+  polyfit(idx, sh, PP);
+
+  /* 'measureFreqXcorr:36' PZ = -PP(2)/2/PP(1); */
+  PZ = b_mrdivide(mrdivide(-PP[1], 2.0), PP[0]);
+
+  /* 'measureFreqXcorr:38' if (PZ>0) */
+  if (PZ > 0.0F) {
+    /* 'measureFreqXcorr:39' F = single(real(Fs/(PZ-1))); */
+    *F = b_mrdivide(Fs, PZ - 1.0F);
   } else {
-    /* 'measureFreqXcorr:18' idx_ends   = find(poses_neg); */
-    nx = shd_sizes[0] * shd_sizes[1];
-    idx = 0;
-    ixstart = 1;
-    exitg3 = 0U;
-    while ((exitg3 == 0U) && (ixstart <= nx)) {
-      guard1 = FALSE;
-      if (poses_neg_data[ixstart - 1]) {
-        idx++;
-        c_ii_data[idx - 1] = ixstart;
-        if (idx >= nx) {
-          exitg3 = 1U;
-        } else {
-          guard1 = TRUE;
-        }
-      } else {
-        guard1 = TRUE;
-      }
-
-      if (guard1 == TRUE) {
-        ixstart++;
-      }
-    }
-
-    if (nx == 1) {
-      if (idx == 0) {
-        nx = 0;
-      }
-    } else {
-      if (1 > idx) {
-        idx = 0;
-      }
-
-      loop_ub = idx - 1;
-      for (i0 = 0; i0 <= loop_ub; i0++) {
-        d_ii_data[i0] = c_ii_data[i0];
-      }
-
-      nx = idx;
-      loop_ub = idx - 1;
-      for (i0 = 0; i0 <= loop_ub; i0++) {
-        c_ii_data[i0] = d_ii_data[i0];
-      }
-    }
-
-    loop_ub = nx - 1;
-    for (i0 = 0; i0 <= loop_ub; i0++) {
-      idx_ends_data[i0] = c_ii_data[i0];
-    }
-
-    /* 'measureFreqXcorr:19' if isempty(idx_ends) */
-    if (nx == 0) {
-    } else {
-      /* 'measureFreqXcorr:23' end_poses = find(idx_ends>idx_start,1,'first'); */
-      loop_ub = nx - 1;
-      for (i0 = 0; i0 <= loop_ub; i0++) {
-        x_data[i0] = (idx_ends_data[i0] > idx_start_data[i0]);
-      }
-
-      idx = 0;
-      k = 1;
-      ixstart = 1;
-      exitg2 = 0U;
-      while ((exitg2 == 0U) && (ixstart <= 1)) {
-        if (x_data[0]) {
-          idx = 1;
-          exitg2 = 1U;
-        } else {
-          ixstart = 2;
-        }
-      }
-
-      if (idx == 0) {
-        k = 0;
-      }
-
-      /* 'measureFreqXcorr:24' if isempty(end_poses) */
-      if (k == 0) {
-      } else {
-        /* 'measureFreqXcorr:28' idx_end = idx_ends(end_poses); */
-        /* 'measureFreqXcorr:30' sh (1:(idx_start(1)-1)) = 0; */
-        if (1.0 > (real_T)idx_start_data[0] - 1.0) {
-          i0 = -1;
-        } else {
-          i0 = idx_start_data[0] - 2;
-        }
-
-        for (ixstart = 0; ixstart <= i0; ixstart++) {
-          tmp_data[ixstart] = 1 + ixstart;
-        }
-
-        loop_ub = i0;
-        for (ixstart = 0; ixstart <= loop_ub; ixstart++) {
-          b_tmp_data[ixstart] = tmp_data[ixstart];
-        }
-
-        loop_ub = i0;
-        for (i0 = 0; i0 <= loop_ub; i0++) {
-          sh_data[b_tmp_data[i0] - 1] = 0.0F;
-        }
-
-        /* 'measureFreqXcorr:31' sh (idx_end(1)+1:analizeTime) = 0; */
-        if (idx_ends_data[0] + 1 > analizeTime) {
-          i0 = 0;
-          ixstart = 0;
-        } else {
-          i0 = idx_ends_data[0];
-          ixstart = analizeTime;
-        }
-
-        nx = ixstart - i0;
-        loop_ub = (ixstart - i0) - 1;
-        for (ixstart = 0; ixstart <= loop_ub; ixstart++) {
-          c_tmp_data[ixstart] = (i0 + ixstart) + 1;
-        }
-
-        loop_ub = nx - 1;
-        for (i0 = 0; i0 <= loop_ub; i0++) {
-          d_tmp_data[i0] = c_tmp_data[i0];
-        }
-
-        loop_ub = nx - 1;
-        for (i0 = 0; i0 <= loop_ub; i0++) {
-          sh_data[d_tmp_data[i0] - 1] = 0.0F;
-        }
-
-        /* 'measureFreqXcorr:32' [M,p] = max(sh); */
-        ixstart = 1;
-        mtmp = sh_data[0];
-        idx = 1;
-        if (sh_sizes[1] > 1) {
-          if (rtIsNaNF(sh_data[0])) {
-            nx = 2;
-            exitg1 = 0U;
-            while ((exitg1 == 0U) && (nx <= sh_sizes[1])) {
-              ixstart = nx;
-              if (!rtIsNaNF(sh_data[nx - 1])) {
-                mtmp = sh_data[nx - 1];
-                exitg1 = 1U;
-              } else {
-                nx++;
-              }
-            }
-          }
-
-          if (ixstart < sh_sizes[1]) {
-            while (ixstart + 1 <= sh_sizes[1]) {
-              if (sh_data[ixstart] > mtmp) {
-                mtmp = sh_data[ixstart];
-                idx = ixstart + 1;
-              }
-
-              ixstart++;
-            }
-          }
-        }
-
-        /* 'measureFreqXcorr:34' if ~isempty(p) */
-        /* 'measureFreqXcorr:35' if p < 4 */
-        if (idx < 4) {
-          /* 'measureFreqXcorr:36' p = 4; */
-          idx = 4;
-        } else {
-          if (idx > (uint16_T)((uint32_T)analizeTime - 3U)) {
-            /* 'measureFreqXcorr:37' elseif p > analizeTime-3 */
-            /* 'measureFreqXcorr:38' p = double(analizeTime)-3; */
-            idx = analizeTime - 3;
-          }
-        }
-
-        /* 'measureFreqXcorr:41' idx = p+(-3:3); */
-        /* 'measureFreqXcorr:43' PP = polyfit(idx, sh(idx), 2); */
-        for (i0 = 0; i0 < 7; i0++) {
-          b_idx = (real_T)idx + (-3.0 + (real_T)i0);
-          sh[i0] = sh_data[(int32_T)b_idx - 1];
-          c_idx[i0] = b_idx;
-        }
-
-        polyfit(c_idx, sh, PP);
-
-        /* 'measureFreqXcorr:44' PZ = -PP(2)/2/PP(1); */
-        PZ = b_mrdivide(mrdivide(-PP[1], 2.0), PP[0]);
-
-        /* 'measureFreqXcorr:46' if (PZ>0) */
-        if (PZ > 0.0F) {
-          /* 'measureFreqXcorr:47' F = single(real(Fs/(PZ-1))); */
-          *F = b_mrdivide(Fs, PZ - 1.0F);
-        } else {
-          /* 'measureFreqXcorr:48' else */
-          /* 'measureFreqXcorr:49' F = single(0*Fs); */
-          *F = 0.0F * Fs;
-        }
-
-        /* 'measureFreqXcorr:51' snr = abs(M); */
-        *snr = (real32_T)fabs(mtmp);
-      }
-    }
+    /* 'measureFreqXcorr:40' else */
+    /* 'measureFreqXcorr:41' F = single(0*Fs); */
+    *F = 0.0F * Fs;
   }
+
+  /* 'measureFreqXcorr:43' snr = abs(M); */
+  *snr = (real32_T)fabs(M);
 }
 
 /* End of code generation (getNote.cpp) */
