@@ -3,7 +3,7 @@
  *
  * Code generation for function 'getNote'
  *
- * C source code generated on: Sun Jan 29 14:30:34 2012
+ * C source code generated on: Sun Jan 29 22:42:04 2012
  *
  */
 
@@ -1425,7 +1425,7 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   static real32_T sh_data[65535];
   static real32_T b_sh_data[65535];
   int32_T shd_sizes[2];
-  int32_T ixstart;
+  int32_T k;
   static creal32_T c_sh_data[65535];
   static creal32_T d_sh_data[65535];
   int32_T b_sh_sizes[2];
@@ -1435,9 +1435,9 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   static boolean_T poses_pos_data[65534];
   boolean_T poses_neg_data[65534];
   int32_T nx;
-  int32_T k;
   int32_T idx;
   int32_T ii_data[1];
+  int32_T ixstart;
   boolean_T exitg4;
   int32_T b_ii_data[1];
   int32_T idx_start_sizes;
@@ -1449,7 +1449,10 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   static int32_T idx_ends_data[65534];
   boolean_T x_data[1];
   boolean_T exitg2;
-  uint16_T i;
+  static int32_T tmp_data[65533];
+  static int32_T b_tmp_data[65533];
+  static int32_T c_tmp_data[65535];
+  static int32_T d_tmp_data[65535];
   real32_T mtmp;
   boolean_T exitg1;
   real32_T sh[7];
@@ -1475,8 +1478,8 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   b_abs(w_data, w_sizes, sh_data, sh_sizes);
   shd_sizes[0] = 1;
   shd_sizes[1] = sh_sizes[1];
-  ixstart = sh_sizes[0] * sh_sizes[1] - 1;
-  for (i0 = 0; i0 <= ixstart; i0++) {
+  k = sh_sizes[0] * sh_sizes[1] - 1;
+  for (i0 = 0; i0 <= k; i0++) {
     b_sh_data[i0] = sh_data[i0];
   }
 
@@ -1486,16 +1489,16 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   /* 'measureFreqXcorr:7' sh = real(sh/sh(1)); */
   b_sh_sizes[0] = 1;
   b_sh_sizes[1] = shd_sizes[1];
-  ixstart = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= ixstart; i0++) {
+  k = shd_sizes[0] * shd_sizes[1] - 1;
+  for (i0 = 0; i0 <= k; i0++) {
     d_sh_data[i0] = c_sh_data[i0];
   }
 
   c_mrdivide(d_sh_data, b_sh_sizes, c_sh_data[0], c_sh_data, shd_sizes);
   sh_sizes[0] = 1;
   sh_sizes[1] = shd_sizes[1];
-  ixstart = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= ixstart; i0++) {
+  k = shd_sizes[0] * shd_sizes[1] - 1;
+  for (i0 = 0; i0 <= k; i0++) {
     sh_data[i0] = c_sh_data[i0].re;
   }
 
@@ -1503,22 +1506,22 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   /* 'measureFreqXcorr:9' shd = diff(shi); */
   c_sh_sizes[0] = 1;
   c_sh_sizes[1] = sh_sizes[1];
-  ixstart = sh_sizes[1] - 1;
-  for (i0 = 0; i0 <= ixstart; i0++) {
+  k = sh_sizes[1] - 1;
+  for (i0 = 0; i0 <= k; i0++) {
     e_sh_data[i0] = (sh_data[i0] > 0.5F);
   }
 
   diff(e_sh_data, c_sh_sizes, shd_data, shd_sizes);
 
   /* 'measureFreqXcorr:10' poses_pos = shd>0; */
-  ixstart = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= ixstart; i0++) {
+  k = shd_sizes[0] * shd_sizes[1] - 1;
+  for (i0 = 0; i0 <= k; i0++) {
     poses_pos_data[i0] = (shd_data[i0] > 0.0);
   }
 
   /* 'measureFreqXcorr:11' poses_neg = shd<0; */
-  ixstart = shd_sizes[0] * shd_sizes[1] - 1;
-  for (i0 = 0; i0 <= ixstart; i0++) {
+  k = shd_sizes[0] * shd_sizes[1] - 1;
+  for (i0 = 0; i0 <= k; i0++) {
     poses_neg_data[i0] = (shd_data[i0] < 0.0);
   }
 
@@ -1564,8 +1567,8 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   }
 
   idx_start_sizes = k;
-  ixstart = k - 1;
-  for (i0 = 0; i0 <= ixstart; i0++) {
+  k--;
+  for (i0 = 0; i0 <= k; i0++) {
     idx_start_data[i0] = ii_data[i0];
   }
 
@@ -1602,26 +1605,26 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
       idx = 0;
     }
 
-    ixstart = idx - 1;
-    for (i0 = 0; i0 <= ixstart; i0++) {
+    k = idx - 1;
+    for (i0 = 0; i0 <= k; i0++) {
       d_ii_data[i0] = c_ii_data[i0];
     }
 
     nx = idx;
-    ixstart = idx - 1;
-    for (i0 = 0; i0 <= ixstart; i0++) {
+    k = idx - 1;
+    for (i0 = 0; i0 <= k; i0++) {
       c_ii_data[i0] = d_ii_data[i0];
     }
   }
 
-  ixstart = nx - 1;
-  for (i0 = 0; i0 <= ixstart; i0++) {
+  k = nx - 1;
+  for (i0 = 0; i0 <= k; i0++) {
     idx_ends_data[i0] = c_ii_data[i0];
   }
 
   /* 'measureFreqXcorr:14' idx_end = idx_ends(find(idx_ends>idx_start,1,'first')); */
-  ixstart = nx - 1;
-  for (i0 = 0; i0 <= ixstart; i0++) {
+  k = nx - 1;
+  for (i0 = 0; i0 <= k; i0++) {
     x_data[i0] = (idx_ends_data[i0] > idx_start_data[i0]);
   }
 
@@ -1655,23 +1658,56 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   /* 'measureFreqXcorr:15' if isempty(idx_end) || isempty(idx_start) */
   if ((k == 0) || (idx_start_sizes == 0)) {
   } else {
-    /* 'measureFreqXcorr:18' for i = 1:(idx_start(1)-1) */
-    for (ixstart = 0; ixstart <= idx_start_data[0] - 2; ixstart++) {
-      /* 'measureFreqXcorr:18' sh (i) = 0; */
-      sh_data[ixstart] = 0.0F;
+    /* 'measureFreqXcorr:18' sh (1:(idx_start(1)-1)) = 0; */
+    if (1.0 > (real_T)idx_start_data[0] - 1.0) {
+      i0 = -1;
+    } else {
+      i0 = idx_start_data[0] - 2;
     }
 
-    /* 'measureFreqXcorr:19' for i = idx_end(1)+1:analizeTime */
-    for (i = (uint16_T)(idx_ends_data[0] + 1); i <= analizeTime; i = (uint16_T)
-         ((uint32_T)i + 1U)) {
-      /* 'measureFreqXcorr:19' sh (i) = 0; */
-      sh_data[i - 1] = 0.0F;
+    for (ixstart = 0; ixstart <= i0; ixstart++) {
+      tmp_data[ixstart] = 1 + ixstart;
+    }
+
+    k = i0;
+    for (ixstart = 0; ixstart <= k; ixstart++) {
+      b_tmp_data[ixstart] = tmp_data[ixstart];
+    }
+
+    k = i0;
+    for (i0 = 0; i0 <= k; i0++) {
+      sh_data[b_tmp_data[i0] - 1] = 0.0F;
+    }
+
+    /* 'measureFreqXcorr:19' sh (idx_end(1)+1:analizeTime) = 0; */
+    if (idx_ends_data[0] + 1 > analizeTime) {
+      i0 = 0;
+      ixstart = 0;
+    } else {
+      i0 = idx_ends_data[0];
+      ixstart = analizeTime;
+    }
+
+    nx = ixstart - i0;
+    k = (ixstart - i0) - 1;
+    for (ixstart = 0; ixstart <= k; ixstart++) {
+      c_tmp_data[ixstart] = (i0 + ixstart) + 1;
+    }
+
+    k = nx - 1;
+    for (i0 = 0; i0 <= k; i0++) {
+      d_tmp_data[i0] = c_tmp_data[i0];
+    }
+
+    k = nx - 1;
+    for (i0 = 0; i0 <= k; i0++) {
+      sh_data[d_tmp_data[i0] - 1] = 0.0F;
     }
 
     /* 'measureFreqXcorr:20' [M,p] = max(sh); */
     ixstart = 1;
     mtmp = sh_data[0];
-    idx = 1;
+    k = 1;
     if (sh_sizes[1] > 1) {
       if (rtIsNaNF(sh_data[0])) {
         nx = 2;
@@ -1691,7 +1727,7 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
         while (ixstart + 1 <= sh_sizes[1]) {
           if (sh_data[ixstart] > mtmp) {
             mtmp = sh_data[ixstart];
-            idx = ixstart + 1;
+            k = ixstart + 1;
           }
 
           ixstart++;
@@ -1701,21 +1737,21 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
 
     /* 'measureFreqXcorr:22' if ~isempty(p) */
     /* 'measureFreqXcorr:23' if p < 4 */
-    if (idx < 4) {
+    if (k < 4) {
       /* 'measureFreqXcorr:24' p = 4; */
-      idx = 4;
+      k = 4;
     } else {
-      if (idx > (uint16_T)((uint32_T)analizeTime - 3U)) {
+      if (k > (uint16_T)((uint32_T)analizeTime - 3U)) {
         /* 'measureFreqXcorr:25' elseif p > analizeTime-3 */
         /* 'measureFreqXcorr:26' p = double(analizeTime)-3; */
-        idx = analizeTime - 3;
+        k = analizeTime - 3;
       }
     }
 
     /* 'measureFreqXcorr:29' idx = p+(-3:3); */
     /* 'measureFreqXcorr:31' PP = polyfit(idx, sh(idx), 2); */
     for (i0 = 0; i0 < 7; i0++) {
-      b_idx = (real_T)idx + (-3.0 + (real_T)i0);
+      b_idx = (real_T)k + (-3.0 + (real_T)i0);
       sh[i0] = sh_data[(int32_T)b_idx - 1];
       c_idx[i0] = b_idx;
     }
