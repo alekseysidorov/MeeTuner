@@ -35,12 +35,12 @@ public:
         buffer.append(device->readAll());
         if (buffer.count() >= sampleSize) {
             //TODO optimize me
-            int32_T s[frameSize];
-            QDataStream stream(buffer);
-            for (int i = 0; i!= frameSize; i++)
-                stream >> s[i];
+            //int32_T s[frameSize];
+            //QDataStream stream(buffer);
+            //for (int i = 0; i!= frameSize; i++)
+            //    stream >> s[i];
 
-            //int32_T *s = reinterpret_cast<int32_T*>(buffer.data()); //fast black magic
+            int32_T *s = reinterpret_cast<int32_T*>(buffer.data()); //fast black magic
 
             real32_T snr;
             creal32_T w[frameSize];
@@ -48,8 +48,9 @@ public:
 
             measureFreqXcorr(s, analyzeTime, sampling, &frequency, &snr, w, w_sizes);
             qDebug() << buffer.count() << frequency << snr;
-
-            emit q_func()->currentFrequencyChanged(frequency);
+            if (snr > 0.5) {
+                emit q_func()->currentFrequencyChanged(frequency);
+            }
             buffer.clear();
         }
     }

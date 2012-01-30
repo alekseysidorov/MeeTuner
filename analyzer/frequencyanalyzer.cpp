@@ -21,6 +21,7 @@ FrequencyAnalyzer::FrequencyAnalyzer(QObject *parent) :
     format.setSampleType(QAudioFormat::SignedInt);
     format.setSampleSize(32);
     format.setFrequency(d->sampling = info.supportedFrequencies().last());
+    format.setChannelCount(1);
 
     if (!info.isFormatSupported(format)) {
         qWarning("Format is unsupported");

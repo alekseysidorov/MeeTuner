@@ -21,7 +21,7 @@ symbian:TARGET.CAPABILITY += NetworkServices
 # If your application uses the Qt Mobility libraries, uncomment the following
 # lines and add the respective components to the MOBILITY variable.
 if(isEmpty(MEEGO_VERSION_MAJOR)) {
-	QT += multimedia
+        QT += multimedia
 }
 
 CONFIG += mobility
