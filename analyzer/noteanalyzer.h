@@ -3,7 +3,6 @@
 
 #include <QObject>
 
-typedef QString Note; //TODO
 typedef int Octave;
 
 class FrequencyAnalyzer;
@@ -13,24 +12,26 @@ class NoteAnalyzer : public QObject
     Q_OBJECT
     Q_DECLARE_PRIVATE(NoteAnalyzer)
 
-    Q_PROPERTY(Note nearestNote READ nearestNote NOTIFY noteChanged)
-    Q_PROPERTY(Note deviation READ deviation NOTIFY deviationChanged)
-    Q_PROPERTY(Note octave READ currentOctave NOTIFY octaveChanged)
+    Q_PROPERTY(QString nearestNote READ nearestNote NOTIFY noteChanged)
+    Q_PROPERTY(qreal deviation READ deviation NOTIFY deviationChanged)
+    Q_PROPERTY(Octave octave READ currentOctave NOTIFY octaveChanged)
     Q_PROPERTY(FrequencyAnalyzer* frequencyAnalyzer READ frequencyAnalyzer)
 public:
     NoteAnalyzer();
     virtual ~NoteAnalyzer();
 
-    Note nearestNote() const;
+    QString nearestNote() const;
     qreal deviation() const;
     Octave currentOctave() const;
     FrequencyAnalyzer *frequencyAnalyzer() const;
 signals:
-    void noteChanged(Note now);
+    void noteChanged(const QString &now);
     void deviationChanged(qreal deviation);
     void octaveChanged(Octave octave);
 protected:
     QScopedPointer<NoteAnalyzerPrivate> d_ptr;
+
+    Q_PRIVATE_SLOT(d_func(), void _q_onFrequencyChanged(qreal))
 };
 
 

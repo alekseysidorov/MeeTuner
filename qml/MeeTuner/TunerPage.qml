@@ -38,34 +38,13 @@ Page {
 		Rectangle {
 			id: slider
 
-			property real deviation: 0
+            property real deviation: noteAnalyzer.deviation
 
 			width: 10
 			height: tune.height
 
 			anchors.horizontalCenter: tune.horizontalCenter
-			anchors.horizontalCenterOffset: tune.width * deviation
-
-			SequentialAnimation {
-				loops: Animation.Infinite
-				running: true
-				RotationAnimation {
-					target: slider
-					property: "deviation"
-					from: -0.5
-					to: 0.5
-					duration: 2500
-
-				}
-				RotationAnimation {
-					target: slider
-					property: "deviation"
-					from: 0.5
-					to: -0.5
-					duration: 2500
-
-				}
-			}
+            anchors.horizontalCenterOffset: deviation
 
 			color: "#65A4F2"
 		}
@@ -80,8 +59,7 @@ Page {
 
 		horizontalAlignment: Text.AlignHCenter
 		color: Math.abs(slider.deviation) < 0.1 ? "#65A4F2" : "#F22727"
-		text: "E"
-
+        text: noteAnalyzer.nearestNote
 		font.pixelSize: 96
 	}
 }

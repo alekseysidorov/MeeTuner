@@ -42,6 +42,17 @@ qreal FrequencyAnalyzer::currentFrequency() const
     return d_func()->frequency;
 }
 
+qreal FrequencyAnalyzer::threshold() const
+{
+    return d_func()->threshold;
+}
+
+void FrequencyAnalyzer::setThreshold(qreal value)
+{
+    d_func()->threshold = value;
+    emit thresholdChanged(value);
+}
+
 FrequencyAnalyzer::State FrequencyAnalyzer::state() const
 {
     return static_cast<State>(d_func()->input->state());

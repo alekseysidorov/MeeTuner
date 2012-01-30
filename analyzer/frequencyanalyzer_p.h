@@ -20,7 +20,7 @@ class FrequencyAnalyzerPrivate
     Q_DECLARE_PUBLIC(FrequencyAnalyzer)
 public:
     FrequencyAnalyzerPrivate(FrequencyAnalyzer *q) : q_ptr(q), input(0),
-        device(0), frequency(0), sampling(-1) {}
+        device(0), frequency(0), sampling(-1), threshold(0.25) {}
     ~FrequencyAnalyzerPrivate() {}
 
     FrequencyAnalyzer *q_ptr;
@@ -29,6 +29,7 @@ public:
     QByteArray buffer;
     real32_T frequency;
     int32_T sampling;
+    real32_T threshold;
 
     void _q_onReadyRead()
     {
@@ -46,8 +47,9 @@ public:
             creal32_T w[frameSize];
             int32_T w_sizes[2];
 
-            measureFreqXcorr(s, analyzeTime, sampling, &frequency, &snr, w, w_sizes);
-            qDebug() << buffer.count() << frequency << snr;
+            measureFreqXcorr(s, analyzeTime, sampling, threshold,
+                             &frequency, &snr, w, w_sizes);
+            //qDebug() << buffer.count() << frequency << snr;
             if (snr > 0.5) {
                 emit q_func()->currentFrequencyChanged(frequency);
             }

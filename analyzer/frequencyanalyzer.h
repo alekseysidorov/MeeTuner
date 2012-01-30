@@ -11,6 +11,7 @@ class FrequencyAnalyzer : public QObject
 
     Q_PROPERTY(qreal currentFrequency READ currentFrequency NOTIFY currentFrequencyChanged)
     Q_PROPERTY(State state READ state NOTIFY stateChanged)
+    Q_PROPERTY(qreal threshold READ threshold WRITE setThreshold NOTIFY thresholdChanged)
     Q_ENUMS(State)
 public:
     enum State { ActiveState, SuspendedState, StoppedState, IdleState };
@@ -18,6 +19,8 @@ public:
 	explicit FrequencyAnalyzer(QObject *parent = 0);
 	~FrequencyAnalyzer();
 	qreal currentFrequency() const;
+    qreal threshold() const;
+    void setThreshold(qreal value);
     State state() const;
 public slots:
 	void start();
@@ -27,6 +30,7 @@ public slots:
 signals:
 	void currentFrequencyChanged(qreal frequency);
     void stateChanged(FrequencyAnalyzer::State state);
+    void thresholdChanged(qreal threshold);
 protected:
 	QScopedPointer<FrequencyAnalyzerPrivate> d_ptr;
 

@@ -49,6 +49,34 @@ Page {
 		}
 	}
 
+    Slider {
+        id: cutoff
+
+        minimumValue: 0
+        maximumValue: 1
+        stepSize: 0.01
+
+        value: 0.25
+
+        valueIndicatorVisible: true
+        platformStyle.inverted: true
+
+        anchors.right: parent.right
+        anchors.rightMargin: 0
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.top: frequency.bottom
+        anchors.topMargin: 10
+
+        Binding {
+            property: "threshold"
+            target: analyzer
+            value: cutoff.value
+        }
+    }
+
+
+
 	onVisibleChanged: {
 		//if (visible) {
 		//	if (analyzer.state === FrequencyAnalyzer.ActiveState)

@@ -10,6 +10,10 @@ PageTileWindow {
 
 	initialPage: tunerPage
 
+    NoteAnalyzer {
+        id: noteAnalyzer
+    }
+
 	TunerPage {
 		id: tunerPage
 	}
@@ -18,10 +22,6 @@ PageTileWindow {
 	}
 	AboutPage {
 		id: aboutPage
-	}
-
-	NoteAnalyzer {
-		id: noteAnalyzer
 	}
 
 	ToolBarLayout {
