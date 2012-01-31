@@ -3,7 +3,7 @@
  *
  * Code generation for function 'getNote'
  *
- * C source code generated on: Mon Jan 30 01:21:37 2012
+ * C source code generated on: Wed Feb 01 01:34:25 2012
  *
  */
 
@@ -18,7 +18,7 @@
 /* Variable Declarations */
 
 /* Variable Definitions */
-static real_T notes[145];
+static real32_T notes[145];
 
 /* Function Declarations */
 static void b_abs(const creal32_T x_data[65535], const int32_T x_sizes[2],
@@ -47,7 +47,6 @@ static real32_T mrdivide(real32_T A, real_T B);
 static void polyfit(const real_T x[7], const real32_T y[7], real32_T p[3]);
 static void power(const real32_T a_data[65535], const int32_T a_sizes[2],
                   real32_T y_data[65535], int32_T y_sizes[2]);
-static real_T rt_powd_snf(real_T u0, real_T u1);
 static real32_T rt_powf_snf(real32_T u0, real32_T u1);
 
 /* Function Definitions */
@@ -970,7 +969,7 @@ static void ifft(const real32_T x_data[65535], const int32_T x_sizes[2],
  */
 static real32_T mrdivide(real32_T A, real_T B)
 {
-  return A / ((real32_T)B);
+  return A / 2.0F;
 }
 
 /*
@@ -1007,52 +1006,6 @@ static void power(const real32_T a_data[65535], const int32_T a_sizes[2],
   for (k = 0; k <= (y_sizes[1] - 1); k++) {
     y_data[k] = rt_powf_snf(a_data[k], 2.0F);
   }
-}
-
-static real_T rt_powd_snf(real_T u0, real_T u1)
-{
-  real_T y;
-  real_T d0;
-  real_T d1;
-  if ((rtIsNaN(u0)) || (rtIsNaN(u1))) {
-    y = rtNaN;
-  } else {
-    d0 = fabs(u0);
-    d1 = fabs(u1);
-    if (rtIsInf(u1)) {
-      if (d0 == 1.0) {
-        y = rtNaN;
-      } else if (d0 > 1.0) {
-        if (u1 > 0.0) {
-          y = rtInf;
-        } else {
-          y = 0.0;
-        }
-      } else if (u1 > 0.0) {
-        y = 0.0;
-      } else {
-        y = rtInf;
-      }
-    } else if (d1 == 0.0) {
-      y = 1.0;
-    } else if (d1 == 1.0) {
-      if (u1 > 0.0) {
-        y = u0;
-      } else {
-        y = 1.0 / u0;
-      }
-    } else if (u1 == 2.0) {
-      y = u0 * u0;
-    } else if ((u1 == 0.5) && (u0 >= 0.0)) {
-      y = sqrt(u0);
-    } else if ((u0 < 0.0) && (u1 > floor(u1))) {
-      y = rtNaN;
-    } else {
-      y = pow(u0, u1);
-    }
-  }
-
-  return y;
 }
 
 static real32_T rt_powf_snf(real32_T u0, real32_T u1)
@@ -1104,18 +1057,17 @@ static real32_T rt_powf_snf(real32_T u0, real32_T u1)
 /*
  * function [noteFreq, noteError, noteName, noteOctave] = getNote(f)
  */
-void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T noteName
-             [3], real_T *noteOctave)
+void getNote(real32_T f, real32_T *noteFreq, real32_T *noteError, char_T
+             noteName[3], int32_T *noteOctave)
 {
+  real32_T x;
   real32_T y[145];
   int32_T ixstart;
-  real32_T mtmp;
   int32_T itmp;
   int32_T ix;
   boolean_T exitg1;
   real32_T fdbl;
   int32_T eint;
-  real_T b_y;
   static const char_T cv0[3] = { 'A', ' ', ' ' };
 
   static const char_T cv1[3] = { 'B', 'b', ' ' };
@@ -1143,13 +1095,14 @@ void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T noteName
   static const char_T cv12[3] = { 'N', 'a', 'N' };
 
   /* 'getNote:3' if isempty(notes) */
-  /* 'getNote:6' [~,n] = min(abs(notes-f)); */
+  /* 'getNote:6' [~,n] = min(abs(log(notes)-log(f))); */
+  x = (real32_T)log(f);
   for (ixstart = 0; ixstart < 145; ixstart++) {
-    y[ixstart] = (real32_T)fabs(((real32_T)notes[ixstart]) - f);
+    y[ixstart] = (real32_T)fabs(((real32_T)log(notes[ixstart])) - x);
   }
 
   ixstart = 1;
-  mtmp = y[0];
+  x = y[0];
   itmp = 0;
   if (rtIsNaNF(y[0])) {
     ix = 2;
@@ -1157,7 +1110,7 @@ void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T noteName
     while ((exitg1 == 0U) && (ix < 146)) {
       ixstart = ix;
       if (!rtIsNaNF(y[ix - 1])) {
-        mtmp = y[ix - 1];
+        x = y[ix - 1];
         exitg1 = 1U;
       } else {
         ix++;
@@ -1167,8 +1120,8 @@ void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T noteName
 
   if (ixstart < 145) {
     while ((ixstart + 1) < 146) {
-      if (y[ixstart] < mtmp) {
-        mtmp = y[ixstart];
+      if (y[ixstart] < x) {
+        x = y[ixstart];
         itmp = ixstart;
       }
 
@@ -1180,7 +1133,7 @@ void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T noteName
   *noteFreq = notes[itmp];
 
   /* 'getNote:8' noteError = 100*log2(f/noteFreq)*12; */
-  fdbl = f / ((real32_T)notes[itmp]);
+  fdbl = f / notes[itmp];
   if (fdbl == 0.0F) {
     fdbl = ((real32_T)rtMinusInf);
   } else if (fdbl < 0.0F) {
@@ -1189,30 +1142,23 @@ void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T noteName
     if ((!rtIsInfF(fdbl)) && (!rtIsNaNF(fdbl))) {
       if ((!rtIsInfF(fdbl)) && (!rtIsNaNF(fdbl))) {
         fdbl = (real32_T)frexp(fdbl, &eint);
-        mtmp = (real32_T)eint;
+        x = (real32_T)eint;
       } else {
-        mtmp = 0.0F;
+        x = 0.0F;
       }
 
       if (fdbl == 0.5F) {
-        fdbl = mtmp - 1.0F;
+        fdbl = x - 1.0F;
       } else {
-        fdbl = (((real32_T)log(fdbl)) / 0.693147182F) + mtmp;
+        fdbl = (((real32_T)log(fdbl)) / 0.693147182F) + x;
       }
     }
   }
 
   *noteError = (100.0F * fdbl) * 12.0F;
 
-  /* 'getNote:9' noteOctave = fix((n-1)/12)+1; */
-  b_y = (((real_T)(itmp + 1)) - 1.0) / 12.0;
-  if (b_y > 0.0) {
-    ixstart = (int32_T)floor(b_y);
-  } else {
-    ixstart = 0;
-  }
-
-  *noteOctave = ((real_T)ixstart) + 1.0;
+  /* 'getNote:9' noteOctave = int32(fix((n+8)/12)-2); */
+  *noteOctave = ((int32_T)floor((((real_T)(itmp + 1)) + 8.0) / 12.0)) - 2;
 
   /* 'getNote:11' switch mod(n-1,12)+1 */
   switch ((itmp - (((int32_T)floor((((real_T)(itmp + 1)) - 1.0) / 12.0)) * 12))
@@ -1325,46 +1271,34 @@ void getNote(real32_T f, real_T *noteFreq, real32_T *noteError, char_T noteName
 
 void getNote_initialize(void)
 {
-  int32_T k;
-  static const real_T dv0[145] = { -4.0, -3.9166666666666665,
-    -3.8333333333333335, -3.75, -3.6666666666666665, -3.5833333333333335, -3.5,
-    -3.4166666666666665, -3.3333333333333335, -3.25, -3.1666666666666665,
-    -3.0833333333333335, -3.0, -2.9166666666666665, -2.8333333333333335, -2.75,
-    -2.6666666666666665, -2.5833333333333335, -2.5, -2.4166666666666665,
-    -2.3333333333333335, -2.25, -2.1666666666666665, -2.0833333333333335, -2.0,
-    -1.9166666666666667, -1.8333333333333333, -1.75, -1.6666666666666667,
-    -1.5833333333333333, -1.5, -1.4166666666666667, -1.3333333333333333, -1.25,
-    -1.1666666666666667, -1.0833333333333333, -1.0, -0.91666666666666663,
-    -0.83333333333333337, -0.75, -0.66666666666666663, -0.58333333333333337,
-    -0.5, -0.41666666666666669, -0.33333333333333331, -0.25,
-    -0.16666666666666666, -0.083333333333333329, 0.0, 0.083333333333333329,
-    0.16666666666666666, 0.25, 0.33333333333333331, 0.41666666666666669, 0.5,
-    0.58333333333333337, 0.66666666666666663, 0.75, 0.83333333333333337,
-    0.91666666666666663, 1.0, 1.0833333333333333, 1.1666666666666667, 1.25,
-    1.3333333333333333, 1.4166666666666667, 1.5, 1.5833333333333333,
-    1.6666666666666667, 1.75, 1.8333333333333333, 1.9166666666666667, 2.0,
-    2.0833333333333335, 2.1666666666666665, 2.25, 2.3333333333333335,
-    2.4166666666666665, 2.5, 2.5833333333333335, 2.6666666666666665, 2.75,
-    2.8333333333333335, 2.9166666666666665, 3.0, 3.0833333333333335,
-    3.1666666666666665, 3.25, 3.3333333333333335, 3.4166666666666665, 3.5,
-    3.5833333333333335, 3.6666666666666665, 3.75, 3.8333333333333335,
-    3.9166666666666665, 4.0, 4.083333333333333, 4.166666666666667, 4.25,
-    4.333333333333333, 4.416666666666667, 4.5, 4.583333333333333,
-    4.666666666666667, 4.75, 4.833333333333333, 4.916666666666667, 5.0,
-    5.083333333333333, 5.166666666666667, 5.25, 5.333333333333333,
-    5.416666666666667, 5.5, 5.583333333333333, 5.666666666666667, 5.75,
-    5.833333333333333, 5.916666666666667, 6.0, 6.083333333333333,
-    6.166666666666667, 6.25, 6.333333333333333, 6.416666666666667, 6.5,
-    6.583333333333333, 6.666666666666667, 6.75, 6.833333333333333,
-    6.916666666666667, 7.0, 7.083333333333333, 7.166666666666667, 7.25,
-    7.333333333333333, 7.416666666666667, 7.5, 7.583333333333333,
-    7.666666666666667, 7.75, 7.833333333333333, 7.916666666666667, 8.0 };
+  static const real32_T fv0[145] = { 6.875F, 7.28380871F, 7.71692657F,
+    8.17579937F, 8.66195679F, 9.17702389F, 9.72271824F, 10.3008614F, 10.9133825F,
+    11.5623255F, 12.2498569F, 12.9782715F, 13.75F, 14.5676174F, 15.4338531F,
+    16.3515987F, 17.3239136F, 18.3540478F, 19.4454365F, 20.6017227F, 21.8267651F,
+    23.124651F, 24.4997139F, 25.956543F, 27.5F, 29.1352348F, 30.8677063F,
+    32.7031975F, 34.6478271F, 36.7080956F, 38.890873F, 41.2034454F, 43.6535301F,
+    46.2493019F, 48.9994278F, 51.9130859F, 55.0F, 58.2704697F, 61.7354126F,
+    65.406395F, 69.2956543F, 73.4161911F, 77.7817459F, 82.4068909F, 87.3070602F,
+    92.4986038F, 97.9988556F, 103.826172F, 110.0F, 116.540939F, 123.470825F,
+    130.81279F, 138.591309F, 146.832382F, 155.563492F, 164.813782F, 174.61412F,
+    184.997208F, 195.997711F, 207.652344F, 220.0F, 233.081879F, 246.94165F,
+    261.62558F, 277.182617F, 293.664764F, 311.126984F, 329.627563F, 349.228241F,
+    369.994415F, 391.995422F, 415.304688F, 440.0F, 466.163757F, 493.883301F,
+    523.25116F, 554.365234F, 587.329529F, 622.253967F, 659.255127F, 698.456482F,
+    739.988831F, 783.990845F, 830.609375F, 880.0F, 932.327515F, 987.766602F,
+    1046.50232F, 1108.73047F, 1174.65906F, 1244.50793F, 1318.51025F, 1396.91296F,
+    1479.97766F, 1567.98169F, 1661.21875F, 1760.0F, 1864.65503F, 1975.5332F,
+    2093.00464F, 2217.46094F, 2349.31812F, 2489.01587F, 2637.02051F, 2793.82593F,
+    2959.95532F, 3135.96338F, 3322.4375F, 3520.0F, 3729.31F, 3951.06641F,
+    4186.00928F, 4434.92188F, 4698.63623F, 4978.03174F, 5274.04102F, 5587.65186F,
+    5919.91064F, 6271.92676F, 6644.875F, 7040.0F, 7458.62F, 7902.13281F,
+    8372.01855F, 8869.84375F, 9397.27246F, 9956.06348F, 10548.082F, 11175.3037F,
+    11839.8213F, 12543.8535F, 13289.75F, 14080.0F, 14917.2402F, 15804.2656F,
+    16744.0371F, 17739.6875F, 18794.5449F, 19912.127F, 21096.1641F, 22350.6074F,
+    23679.6426F, 25087.707F, 26579.5F, 28160.0F };
 
+  memcpy((void *)(&notes[0]), (void *)(&fv0[0]), 145U * (sizeof(real32_T)));
   rt_InitInfAndNaN(8U);
-  for (k = 0; k < 145; k++) {
-    notes[k] = rt_powd_snf(2.0, dv0[k]);
-    notes[k] *= 110.0;
-  }
 }
 
 void getNote_terminate(void)
