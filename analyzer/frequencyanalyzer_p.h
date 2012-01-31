@@ -12,7 +12,7 @@
 
 static const int frameSize = 8192;
 static const int sampleSize = 8192/sizeof(int32_T)*sizeof(int);
-static const uint16_T analyzeTime = frameSize;
+static const uint16_T analyzeTime = frameSize / 2;
 
 class FrequencyAnalyzer;
 class FrequencyAnalyzerPrivate

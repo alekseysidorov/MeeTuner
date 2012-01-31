@@ -63,7 +63,7 @@ Page {
             maximumValue: 1
             stepSize: 0.01
 
-            value: 0.66
+            value: 0.10
 
             valueIndicatorVisible: true
             platformStyle.inverted: true

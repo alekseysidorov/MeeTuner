@@ -34,7 +34,8 @@ Item {
 
                 property real __deviation: Math.abs(modelData / 100)
                 property bool __current: noteAnalyzer.deviation > modelData - range.step &&
-                                         noteAnalyzer.deviation < modelData + range.step
+                                         noteAnalyzer.deviation < modelData + range.step &&
+                                         noteAnalyzer.nearestNote.length
 
                 color: "gray"
                 width: root.width / range.count - row.spacing

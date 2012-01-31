@@ -34,7 +34,7 @@ qreal NoteAnalyzer::deviation() const
     return d_func()->deviation;
 }
 
-Octave NoteAnalyzer::currentOctave() const
+int NoteAnalyzer::currentOctave() const
 {
     return d_func()->currentOctave;
 }
