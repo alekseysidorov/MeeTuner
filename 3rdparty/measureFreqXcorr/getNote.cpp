@@ -3,7 +3,7 @@
  *
  * Code generation for function 'getNote'
  *
- * C source code generated on: Wed Feb 01 01:04:23 2012
+ * C source code generated on: Wed Feb 01 01:34:25 2012
  *
  */
 
@@ -1058,7 +1058,7 @@ static real32_T rt_powf_snf(real32_T u0, real32_T u1)
  * function [noteFreq, noteError, noteName, noteOctave] = getNote(f)
  */
 void getNote(real32_T f, real32_T *noteFreq, real32_T *noteError, char_T
-             noteName[3], real_T *noteOctave)
+             noteName[3], int32_T *noteOctave)
 {
   real32_T x;
   real32_T y[145];
@@ -1068,7 +1068,6 @@ void getNote(real32_T f, real32_T *noteFreq, real32_T *noteError, char_T
   boolean_T exitg1;
   real32_T fdbl;
   int32_T eint;
-  real_T b_y;
   static const char_T cv0[3] = { 'A', ' ', ' ' };
 
   static const char_T cv1[3] = { 'B', 'b', ' ' };
@@ -1158,15 +1157,8 @@ void getNote(real32_T f, real32_T *noteFreq, real32_T *noteError, char_T
 
   *noteError = (100.0F * fdbl) * 12.0F;
 
-  /* 'getNote:9' noteOctave = fix((n-1)/12)+1; */
-  b_y = (((real_T)(itmp + 1)) - 1.0) / 12.0;
-  if (b_y > 0.0) {
-    ixstart = (int32_T)floor(b_y);
-  } else {
-    ixstart = 0;
-  }
-
-  *noteOctave = ((real_T)ixstart) + 1.0;
+  /* 'getNote:9' noteOctave = int32(fix((n+8)/12)-2); */
+  *noteOctave = ((int32_T)floor((((real_T)(itmp + 1)) + 8.0) / 12.0)) - 2;
 
   /* 'getNote:11' switch mod(n-1,12)+1 */
   switch ((itmp - (((int32_T)floor((((real_T)(itmp + 1)) - 1.0) / 12.0)) * 12))
