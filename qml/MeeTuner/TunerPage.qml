@@ -27,39 +27,39 @@ Page {
 		}
 	}
 
-	Item {
-		id: tune
+    TunerSlider {
+        id: tuneSlider
 
-		height: 90
-		anchors.verticalCenter: parent.verticalCenter
-		anchors.left: header.left
-		anchors.right: header.right
-
-		Rectangle {
-			id: slider
-
-            property real deviation: noteAnalyzer.deviation
-
-			width: 10
-			height: tune.height
-
-			anchors.horizontalCenter: tune.horizontalCenter
-            anchors.horizontalCenterOffset: deviation
-
-			color: "#65A4F2"
-		}
-	}
+        anchors.bottom: note.top
+        anchors.left: header.left
+        anchors.right: header.right
+    }
 
 	Label {
 		id: note
 
-		anchors.top: tune.bottom
-		anchors.topMargin: 20
-		anchors.horizontalCenter: tune.horizontalCenter
+
+        anchors.centerIn: tunerPage
 
 		horizontalAlignment: Text.AlignHCenter
-		color: Math.abs(slider.deviation) < 0.1 ? "#65A4F2" : "#F22727"
+        color: Math.abs(noteAnalyzer.deviation) < 5 ? "#65A4F2" : "#F22727"
         text: noteAnalyzer.nearestNote
+
 		font.pixelSize: 96
+
+        Label {
+            id: shadow
+
+            z: parent.z - 1
+            x: 2
+            y: 2
+            smooth: true
+
+            horizontalAlignment: parent.horizontalAlignment
+            text: parent.text
+            color: "#333"
+            font.pixelSize: parent.font.pixelSize
+        }
 	}
+
 }

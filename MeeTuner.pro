@@ -45,8 +45,8 @@ SOURCES += main.cpp \
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
 
-CONFIG -= debug_and_release debug
-CONFIG += release
+#CONFIG -= debug_and_release debug
+#CONFIG += release
 
 OTHER_FILES += \
     qtc_packaging/debian_harmattan/rules \

@@ -34,7 +34,7 @@ public:
 
         getNote(f, &noteFreq, &noteError, name.data(), &noteOctave);
 
-        if (!qFuzzyCompare(noteError, deviation)) {
+        if (!qFuzzyCompare((qreal)noteError, deviation)) {
             deviation = noteError;
             emit q->deviationChanged(deviation);
         }
@@ -42,7 +42,7 @@ public:
             nearestNote = name;
             emit q->noteChanged(nearestNote);
         }
-        qDebug() << name << noteError;
+        //qDebug() << name << noteError;
     }
 };
 

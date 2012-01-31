@@ -5,85 +5,77 @@ import org.meetuner 1.0
 import "components"
 
 Page {
-	id: tunerPage
-	tools: commonTools
+    id: tunerPage
 
-	PageHeader {
-		text: qsTr("Debug frequency analyzer")
-	}
+    property int __fontSize: 14
+    property color __fontColor: "gray"
 
-	Label {
-		id: label
+    tools: commonTools
 
-		anchors.centerIn: parent
+    PageHeader {
+        text: qsTr("Debug frequency analyzer")
+    }
 
-		text: qsTr("Frequency")
-		font.pointSize: 14
-		color: "gray"
-	}
+    Column {
+        anchors.centerIn: parent
+        spacing: __fontSize
 
-	Label {
-		id: frequency
-		x: 0
+        Label {
+            text: qsTr("Frequency: \n") + analyzer.currentFrequency.toFixed(2)
+            font.pointSize: __fontSize
+            horizontalAlignment: Text.AlignHCenter
+            width: parent.width
+            platformStyle.inverted: true
+        }
+        Label {
+            text: qsTr("Nearest note: \n") + noteAnalyzer.nearestNote
+            font.pointSize: __fontSize
+            horizontalAlignment: Text.AlignHCenter
+            width: parent.width
+            platformStyle.inverted: true
+        }
+        Label {
+            text: qsTr("Deviation: \n") + noteAnalyzer.deviation.toFixed(2)
+            font.pointSize: __fontSize
+            horizontalAlignment: Text.AlignHCenter
+            width: parent.width
+            platformStyle.inverted: true
+        }
+        Label {
+            text: qsTr("Octave: \n") + noteAnalyzer.octave
+            font.pointSize: __fontSize
+            horizontalAlignment: Text.AlignHCenter
+            width: parent.width
+            platformStyle.inverted: true
+        }
+        Label {
+            text: qsTr("Threshold")
+            font.pointSize: __fontSize
+            horizontalAlignment: Text.AlignHCenter
+            width: parent.width
+            platformStyle.inverted: true
+        }
 
-		anchors.top: label.bottom
-		anchors.topMargin: 15
+        Slider {
+            id: cutoff
 
-		text: analyzer.currentFrequency.toFixed(2)
-		anchors.horizontalCenter: parent.horizontalCenter
-		font.pointSize: label.font.pointSize
-		color: label.color
-	}
+            minimumValue: 0
+            maximumValue: 1
+            stepSize: 0.01
 
-	Button {
-		id: button
-		anchors.horizontalCenter: parent.horizontalCenter
-		anchors.bottom: parent.bottom
-		text: analyzer.state === FrequencyAnalyzer.ActiveState ? qsTr("Stop") :
-																 qsTr("Start")
-		onClicked: {
-			if (analyzer.state === FrequencyAnalyzer.ActiveState)
-				analyzer.stop();
-			else
-				analyzer.start();
-		}
-	}
+            value: 0.66
 
-    Slider {
-        id: cutoff
+            valueIndicatorVisible: true
+            platformStyle.inverted: true
 
-        minimumValue: 0
-        maximumValue: 1
-        stepSize: 0.01
-
-        value: 0.25
-
-        valueIndicatorVisible: true
-        platformStyle.inverted: true
-
-        anchors.right: parent.right
-        anchors.rightMargin: 0
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-        anchors.top: frequency.bottom
-        anchors.topMargin: 10
-
-        Binding {
-            property: "threshold"
-            target: analyzer
-            value: cutoff.value
+            Binding {
+                property: "threshold"
+                target: analyzer
+                value: cutoff.value
+            }
         }
     }
 
 
 
-	onVisibleChanged: {
-		//if (visible) {
-		//	if (analyzer.state === FrequencyAnalyzer.ActiveState)
-		//		analyzer.suspend();
-		//} else {
-		//	if (analyzer.state === FrequencyAnalyzer.IdleState)
-		//		analyzer.resume();
-		//}
-	}
 }
