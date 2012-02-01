@@ -21,8 +21,10 @@ symbian:TARGET.CAPABILITY += NetworkServices
 # If your application uses the Qt Mobility libraries, uncomment the following
 # lines and add the respective components to the MOBILITY variable.
 if(isEmpty(MEEGO_VERSION_MAJOR)) {
-        QT += multimedia
+    QT += multimedia
 }
+
+#QMAKE_CXXFLAGS += -O3 -ffast-math #fast mathematic
 
 CONFIG += mobility
 MOBILITY += multimedia
@@ -45,8 +47,8 @@ SOURCES += main.cpp \
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
 
-#CONFIG -= debug_and_release debug
-#CONFIG += release
+CONFIG -= debug_and_release debug
+CONFIG += release
 
 OTHER_FILES += \
     qtc_packaging/debian_harmattan/rules \

@@ -33,26 +33,27 @@ PageTileWindow {
 			pageStack: appWindow.pageStack
 
 			anchors.fill: parent
-			anchors.margins: 10
+            anchors.leftMargin: 12
+            anchors.rightMargin: 12
 			spacing: 18
 
 			TileIcon {
 				id: audioIcon
 				iconSource: checked ? "images/tile-audio-down.png" :
 									  "images/tile-audio-up.png"
-				text: qsTr("Tuner")
+                text: qsTr("Guitar Tuner")
 				checkable: true
 				page: tunerPage
 				transformOrigin: Item.BottomLeft
+                badge: (analyzer.state === FrequencyAnalyzer.ActiveState) ? "*" : "";
 			}
 			TileIcon {
 				id: testIcon
 				iconSource: checked ? "images/tile-test-down.png" :
 									  "images/tile-test-up.png"
-				text: qsTr("Debug")
+                text: qsTr("Details")
 				checkable: true
 				page: testPage
-				badge: (analyzer.state === FrequencyAnalyzer.ActiveState) ? "*" : "";
 			}
 			TileIcon {
 				iconSource: checked ? "images/tile-about-down.png" :

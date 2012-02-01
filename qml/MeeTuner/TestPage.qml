@@ -13,65 +13,55 @@ Page {
     tools: commonTools
 
     PageHeader {
+        id: header
         text: qsTr("Debug frequency analyzer")
     }
 
     Column {
-        anchors.centerIn: parent
+
+        anchors.top: header.bottom
+        anchors.left: header.left
+        anchors.right: header.right
+        anchors.bottom: header.bottom
+        anchors.topMargin: header.height
+
         spacing: __fontSize
 
-        Label {
-            text: qsTr("Frequency: \n") + analyzer.currentFrequency.toFixed(2)
-            font.pointSize: __fontSize
-            horizontalAlignment: Text.AlignHCenter
-            width: parent.width
-            platformStyle.inverted: true
+        ValueField {
+            name: qsTr("Frequency:")
+            value: analyzer.currentFrequency.toFixed(2)
         }
-        Label {
-            text: qsTr("Nearest note: \n") + noteAnalyzer.nearestNote
-            font.pointSize: __fontSize
-            horizontalAlignment: Text.AlignHCenter
-            width: parent.width
-            platformStyle.inverted: true
+        ValueField {
+            name: qsTr("Nearest note:")
+            value: noteAnalyzer.nearestNote
         }
-        Label {
-            text: qsTr("Deviation: \n") + noteAnalyzer.deviation.toFixed(2)
-            font.pointSize: __fontSize
-            horizontalAlignment: Text.AlignHCenter
-            width: parent.width
-            platformStyle.inverted: true
+        ValueField {
+            name: qsTr("Deviation:")
+            value: noteAnalyzer.deviation.toFixed(2)
         }
-        Label {
-            text: qsTr("Octave: \n") + noteAnalyzer.octave
-            font.pointSize: __fontSize
-            horizontalAlignment: Text.AlignHCenter
-            width: parent.width
-            platformStyle.inverted: true
+        ValueField {
+            name: qsTr("Octave:")
+            value: noteAnalyzer.octave
         }
-        Label {
-            text: qsTr("Threshold")
-            font.pointSize: __fontSize
-            horizontalAlignment: Text.AlignHCenter
-            width: parent.width
-            platformStyle.inverted: true
-        }
+        FormField {
+            name: qsTr("Threshold:")
+            item: Slider {
+                id: cutoff
 
-        Slider {
-            id: cutoff
+                minimumValue: 0.05
+                maximumValue: 0.95
+                stepSize: 0.01
 
-            minimumValue: 0
-            maximumValue: 1
-            stepSize: 0.01
+                value: 0.50
 
-            value: 0.10
+                valueIndicatorVisible: true
+                platformStyle.inverted: true
 
-            valueIndicatorVisible: true
-            platformStyle.inverted: true
-
-            Binding {
-                property: "threshold"
-                target: analyzer
-                value: cutoff.value
+                Binding {
+                    property: "threshold"
+                    target: analyzer
+                    value: cutoff.value
+                }
             }
         }
     }
