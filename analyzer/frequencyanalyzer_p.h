@@ -11,7 +11,7 @@
 #include <QDataStream>
 
 static const int frameSize = 8192;
-static const int sampleSize = 8192/sizeof(int32_T)*sizeof(int);
+static const int sampleSize = frameSize * sizeof(int32_T)/sizeof(char);
 static const uint16_T analyzeTime = frameSize;
 
 class FrequencyAnalyzer;

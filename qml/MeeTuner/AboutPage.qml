@@ -4,11 +4,32 @@ import com.nokia.meego 1.0
 import "components"
 
 Page {
-	id: aboutPage
+    id: aboutPage
 
-	PageHeader {
-		text: qsTr("About MeeTuner")
-	}
+    PageHeader {
+        id: header
+        text: qsTr("About MeeTuner")
+    }
 
-	tools: commonTools
+    Column {
+
+        spacing: 14
+
+        anchors.top: header.bottom
+        anchors.topMargin: header.height
+        anchors.right: header.right
+        anchors.left: header.left
+
+        Label {
+            platformStyle.inverted: true
+            text: qsTr("Aleksey and Maksim Sidorov presents a guitar tuner for MeeGo Harmattan. <br />" +
+                       "This is a pre-alpha software! <br />" +
+                       "Visit our <a href=\"https://github.com/gorthauer/MeeTuner\">webpage</a> for details.")
+            width: parent.width
+            textFormat: Text.RichText
+            onLinkActivated: Qt.openUrlExternally(link)
+        }
+    }
+
+    tools: commonTools
 }

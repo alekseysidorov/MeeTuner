@@ -17,6 +17,8 @@ Page {
 		id: button
 		anchors.horizontalCenter: parent.horizontalCenter
 		anchors.bottom: parent.bottom
+        anchors.bottomMargin: 15
+
 		text: analyzer.state === FrequencyAnalyzer.ActiveState ? qsTr("Stop") :
 																 qsTr("Start")
 		onClicked: {
@@ -27,39 +29,27 @@ Page {
 		}
 	}
 
-	Item {
-		id: tune
+    TunerSlider {
+        id: tuneSlider
 
-		height: 90
-		anchors.verticalCenter: parent.verticalCenter
-		anchors.left: header.left
-		anchors.right: header.right
-
-		Rectangle {
-			id: slider
-
-            property real deviation: noteAnalyzer.deviation
-
-			width: 10
-			height: tune.height
-
-			anchors.horizontalCenter: tune.horizontalCenter
-            anchors.horizontalCenterOffset: deviation
-
-			color: "#65A4F2"
-		}
-	}
+        anchors.top: header.bottom
+        anchors.topMargin: 24
+        anchors.left: header.left
+        anchors.right: header.right
+    }
 
 	Label {
 		id: note
 
-		anchors.top: tune.bottom
-		anchors.topMargin: 20
-		anchors.horizontalCenter: tune.horizontalCenter
-
 		horizontalAlignment: Text.AlignHCenter
-		color: Math.abs(slider.deviation) < 0.1 ? "#65A4F2" : "#F22727"
+        color: Math.abs(noteAnalyzer.deviation) < 5 ? "#65A4F2" : "#F22727"
         text: noteAnalyzer.nearestNote
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: tuneSlider.bottom
+        anchors.topMargin: 12
+
+
 		font.pixelSize: 96
 	}
+
 }

@@ -3,8 +3,6 @@
 
 #include <QObject>
 
-typedef int Octave;
-
 class FrequencyAnalyzer;
 class NoteAnalyzerPrivate;
 class NoteAnalyzer : public QObject
@@ -14,7 +12,7 @@ class NoteAnalyzer : public QObject
 
     Q_PROPERTY(QString nearestNote READ nearestNote NOTIFY noteChanged)
     Q_PROPERTY(qreal deviation READ deviation NOTIFY deviationChanged)
-    Q_PROPERTY(Octave octave READ currentOctave NOTIFY octaveChanged)
+    Q_PROPERTY(int octave READ currentOctave NOTIFY octaveChanged)
     Q_PROPERTY(FrequencyAnalyzer* frequencyAnalyzer READ frequencyAnalyzer)
 public:
     NoteAnalyzer();
@@ -22,12 +20,12 @@ public:
 
     QString nearestNote() const;
     qreal deviation() const;
-    Octave currentOctave() const;
+    int currentOctave() const;
     FrequencyAnalyzer *frequencyAnalyzer() const;
 signals:
     void noteChanged(const QString &now);
     void deviationChanged(qreal deviation);
-    void octaveChanged(Octave octave);
+    void octaveChanged(int octave);
 protected:
     QScopedPointer<NoteAnalyzerPrivate> d_ptr;
 

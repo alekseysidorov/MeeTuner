@@ -20,6 +20,8 @@ FrequencyAnalyzer::FrequencyAnalyzer(QObject *parent) :
     format.setByteOrder(QAudioFormat::LittleEndian);
     format.setSampleType(QAudioFormat::SignedInt);
     format.setSampleSize(32);
+    //format.setFrequency(d->sampling = 11025);
+    //format.setFrequency(d->sampling = 22050);
     format.setFrequency(d->sampling = info.supportedFrequencies().last());
     format.setChannelCount(1);
 
@@ -35,6 +37,7 @@ FrequencyAnalyzer::FrequencyAnalyzer(QObject *parent) :
 FrequencyAnalyzer::~FrequencyAnalyzer()
 {
     stop();
+    qDebug() << Q_FUNC_INFO;
 }
 
 qreal FrequencyAnalyzer::currentFrequency() const

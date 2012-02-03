@@ -5,85 +5,67 @@ import org.meetuner 1.0
 import "components"
 
 Page {
-	id: tunerPage
-	tools: commonTools
+    id: tunerPage
 
-	PageHeader {
-		text: qsTr("Debug frequency analyzer")
-	}
+    property int __fontSize: 14
+    property color __fontColor: "gray"
 
-	Label {
-		id: label
+    tools: commonTools
 
-		anchors.centerIn: parent
+    PageHeader {
+        id: header
+        text: qsTr("Debug frequency analyzer")
+    }
 
-		text: qsTr("Frequency")
-		font.pointSize: 14
-		color: "gray"
-	}
+    Column {
 
-	Label {
-		id: frequency
-		x: 0
+        anchors.top: header.bottom
+        anchors.left: header.left
+        anchors.right: header.right
+        anchors.bottom: header.bottom
+        anchors.topMargin: header.height
 
-		anchors.top: label.bottom
-		anchors.topMargin: 15
+        spacing: __fontSize
 
-		text: analyzer.currentFrequency.toFixed(2)
-		anchors.horizontalCenter: parent.horizontalCenter
-		font.pointSize: label.font.pointSize
-		color: label.color
-	}
+        ValueField {
+            name: qsTr("Frequency:")
+            value: analyzer.currentFrequency.toFixed(2)
+        }
+        ValueField {
+            name: qsTr("Nearest note:")
+            value: noteAnalyzer.nearestNote
+        }
+        ValueField {
+            name: qsTr("Deviation:")
+            value: noteAnalyzer.deviation.toFixed(2)
+        }
+        ValueField {
+            name: qsTr("Octave:")
+            value: noteAnalyzer.octave
+        }
+        FormField {
+            name: qsTr("Threshold:")
+            item: Slider {
+                id: cutoff
 
-	Button {
-		id: button
-		anchors.horizontalCenter: parent.horizontalCenter
-		anchors.bottom: parent.bottom
-		text: analyzer.state === FrequencyAnalyzer.ActiveState ? qsTr("Stop") :
-																 qsTr("Start")
-		onClicked: {
-			if (analyzer.state === FrequencyAnalyzer.ActiveState)
-				analyzer.stop();
-			else
-				analyzer.start();
-		}
-	}
+                minimumValue: 0.05
+                maximumValue: 0.95
+                stepSize: 0.01
 
-    Slider {
-        id: cutoff
+                value: 0.50
 
-        minimumValue: 0
-        maximumValue: 1
-        stepSize: 0.01
+                valueIndicatorVisible: true
+                platformStyle.inverted: true
 
-        value: 0.25
-
-        valueIndicatorVisible: true
-        platformStyle.inverted: true
-
-        anchors.right: parent.right
-        anchors.rightMargin: 0
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-        anchors.top: frequency.bottom
-        anchors.topMargin: 10
-
-        Binding {
-            property: "threshold"
-            target: analyzer
-            value: cutoff.value
+                Binding {
+                    property: "threshold"
+                    target: analyzer
+                    value: cutoff.value
+                }
+            }
         }
     }
 
 
 
-	onVisibleChanged: {
-		//if (visible) {
-		//	if (analyzer.state === FrequencyAnalyzer.ActiveState)
-		//		analyzer.suspend();
-		//} else {
-		//	if (analyzer.state === FrequencyAnalyzer.IdleState)
-		//		analyzer.resume();
-		//}
-	}
 }
