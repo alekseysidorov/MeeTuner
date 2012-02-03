@@ -3,7 +3,7 @@
  *
  * Code generation for function 'getNote'
  *
- * C source code generated on: Wed Feb 01 01:34:25 2012
+ * C source code generated on: Sat Feb 04 00:48:52 2012
  *
  */
 
@@ -501,7 +501,7 @@ static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
   int32_T colbottom;
   int32_T exitg1;
   int32_T iy;
-  int32_T i4;
+  int32_T i5;
   int32_T ix;
   real_T c;
   int32_T ia;
@@ -550,8 +550,8 @@ static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
       }
 
       iy = 0;
-      i4 = ic0 + (7 * i);
-      for (i = ic0; i <= i4; i += 7) {
+      i5 = ic0 + (7 * i);
+      for (i = ic0; i <= i5; i += 7) {
         ix = iv0;
         c = 0.0;
         colbottom = i + lastv;
@@ -573,8 +573,8 @@ static void eml_matlab_zlarf(int32_T m, int32_T n, int32_T iv0, real_T tau,
         if (work[colbottom] != 0.0) {
           c = work[colbottom] * (-tau);
           ix = iv0;
-          i4 = lastv + i;
-          for (iy = i; (iy + 1) <= i4; iy++) {
+          i5 = lastv + i;
+          for (iy = i; (iy + 1) <= i5; iy++) {
             C[iy] += C[ix - 1] * c;
             ix++;
           }
@@ -1445,6 +1445,67 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
 
   /* 'measureFreqXcorr:43' snr = abs(M); */
   *snr = (real32_T)fabs(M);
+}
+
+/*
+ * function [dB, Lin] = powerMeter(signal, len)
+ */
+void powerMeter(const int32_T signal[8192], uint32_T len, real32_T *dB, real32_T
+                *Lin)
+{
+  int32_T tmp_sizes;
+  int32_T tmp_data[8192];
+  int32_T loop_ub;
+  int32_T i4;
+  int32_T a_sizes[2];
+  static real32_T a_data[65535];
+  int32_T y_sizes[2];
+  static real32_T y_data[65535];
+  real32_T b_y_data[8192];
+  real32_T y;
+
+  /* 'powerMeter:3' Lin = sqrt(sum((single(signal(1:len)).^2)/single(len))); */
+  if (1U > len) {
+    tmp_sizes = 0;
+  } else {
+    tmp_sizes = (int32_T)len;
+  }
+
+  loop_ub = tmp_sizes - 1;
+  for (i4 = 0; i4 <= loop_ub; i4++) {
+    tmp_data[i4] = 1 + i4;
+  }
+
+  a_sizes[0] = 1;
+  a_sizes[1] = tmp_sizes;
+  loop_ub = tmp_sizes - 1;
+  for (i4 = 0; i4 <= loop_ub; i4++) {
+    a_data[i4] = (real32_T)signal[tmp_data[i4] - 1];
+  }
+
+  eml_scalexp_alloc(a_data, a_sizes, y_data, y_sizes);
+  for (tmp_sizes = 0; tmp_sizes <= (y_sizes[1] - 1); tmp_sizes++) {
+    y_data[tmp_sizes] = rt_powf_snf(a_data[tmp_sizes], 2.0F);
+  }
+
+  loop_ub = (y_sizes[0] * y_sizes[1]) - 1;
+  for (i4 = 0; i4 <= loop_ub; i4++) {
+    b_y_data[i4] = y_data[i4] / ((real32_T)len);
+  }
+
+  if (y_sizes[1] == 0) {
+    y = 0.0F;
+  } else {
+    y = b_y_data[0];
+    for (tmp_sizes = 2; tmp_sizes <= y_sizes[1]; tmp_sizes++) {
+      y += b_y_data[tmp_sizes - 1];
+    }
+  }
+
+  *Lin = (real32_T)sqrt(y);
+
+  /* 'powerMeter:4' dB = 20*log10(Lin); */
+  *dB = 20.0F * ((real32_T)log10(*Lin));
 }
 
 /* End of code generation (getNote.cpp) */
