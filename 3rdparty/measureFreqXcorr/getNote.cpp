@@ -3,7 +3,7 @@
  *
  * Code generation for function 'getNote'
  *
- * C source code generated on: Sat Feb 04 00:48:52 2012
+ * C source code generated on: Sat Feb 04 00:52:50 2012
  *
  */
 
@@ -47,7 +47,6 @@ static real32_T mrdivide(real32_T A, real_T B);
 static void polyfit(const real_T x[7], const real32_T y[7], real32_T p[3]);
 static void power(const real32_T a_data[65535], const int32_T a_sizes[2],
                   real32_T y_data[65535], int32_T y_sizes[2]);
-static real32_T rt_powf_snf(real32_T u0, real32_T u1);
 
 /* Function Definitions */
 
@@ -86,7 +85,7 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
   int32_T nRowsD4;
   int32_T lastChan;
   real32_T e;
-  real32_T costab1q_data[16385];
+  static real32_T costab1q_data[16385];
   int32_T k;
   static real32_T costab_data[32769];
   static real32_T sintab_data[32769];
@@ -134,11 +133,11 @@ static void b_eml_fft(const real32_T x_data[65535], const int32_T x_sizes[1],
     costab1q_data[0] = 1.0F;
     nd2 = (nRowsD4 >> 1);
     for (k = 1; k <= nd2; k++) {
-      costab1q_data[k] = (real32_T)cos(e * ((real32_T)k));
+      costab1q_data[k] = cosf(e * ((real32_T)k));
     }
 
     for (k = nd2 + 1; k <= (nRowsD4 - 1); k++) {
-      costab1q_data[k] = (real32_T)sin(e * ((real32_T)(nRowsD4 - k)));
+      costab1q_data[k] = sinf(e * ((real32_T)(nRowsD4 - k)));
     }
 
     costab1q_data[nRowsD4] = 0.0F;
@@ -294,8 +293,8 @@ static void c_mrdivide(const creal32_T A_data[65535], const int32_T A_sizes[2],
         y_data[i3].im = -(A_data[i3].re / B.im);
       }
     } else {
-      brm = (real32_T)fabs(B.re);
-      bim = (real32_T)fabs(B.im);
+      brm = fabsf(B.re);
+      bim = fabsf(B.im);
       if (brm > bim) {
         bim = B.im / B.re;
         d = B.re + (bim * B.im);
@@ -340,7 +339,7 @@ static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
   int32_T nRowsD2;
   int32_T nRowsD4;
   real32_T e;
-  real32_T costab1q_data[16385];
+  static real32_T costab1q_data[16385];
   int32_T k;
   static real32_T costab_data[32769];
   static real32_T sintab_data[32769];
@@ -388,11 +387,11 @@ static void eml_fft(const real32_T x[8192], uint32_T n, creal32_T y_data[65535],
   costab1q_data[0] = 1.0F;
   nd2 = (nRowsD4 >> 1);
   for (k = 1; k <= nd2; k++) {
-    costab1q_data[k] = (real32_T)cos(e * ((real32_T)k));
+    costab1q_data[k] = cosf(e * ((real32_T)k));
   }
 
   for (k = nd2 + 1; k <= (nRowsD4 - 1); k++) {
-    costab1q_data[k] = (real32_T)sin(e * ((real32_T)(nRowsD4 - k)));
+    costab1q_data[k] = sinf(e * ((real32_T)(nRowsD4 - k)));
   }
 
   costab1q_data[nRowsD4] = 0.0F;
@@ -851,14 +850,14 @@ static real32_T eml_scalar_abs(const creal32_T x)
 {
   real32_T y;
   real32_T a;
-  a = (real32_T)fabs(x.re);
-  y = (real32_T)fabs(x.im);
+  a = fabsf(x.re);
+  y = fabsf(x.im);
   if (a < y) {
     a /= y;
-    y *= (real32_T)sqrt((a * a) + 1.0F);
+    y *= sqrtf((a * a) + 1.0F);
   } else if (a > y) {
     y /= a;
-    y = ((real32_T)sqrt((y * y) + 1.0F)) * a;
+    y = sqrtf((y * y) + 1.0F) * a;
   } else if (rtIsNaNF(y)) {
   } else {
     y = a * 1.41421354F;
@@ -1004,54 +1003,8 @@ static void power(const real32_T a_data[65535], const int32_T a_sizes[2],
   int32_T k;
   eml_scalexp_alloc(a_data, a_sizes, y_data, y_sizes);
   for (k = 0; k <= (y_sizes[1] - 1); k++) {
-    y_data[k] = rt_powf_snf(a_data[k], 2.0F);
+    y_data[k] = powf(a_data[k], 2.0F);
   }
-}
-
-static real32_T rt_powf_snf(real32_T u0, real32_T u1)
-{
-  real32_T y;
-  real32_T f0;
-  real32_T f1;
-  if ((rtIsNaNF(u0)) || (rtIsNaNF(u1))) {
-    y = ((real32_T)rtNaN);
-  } else {
-    f0 = (real32_T)fabs(u0);
-    f1 = (real32_T)fabs(u1);
-    if (rtIsInfF(u1)) {
-      if (f0 == 1.0F) {
-        y = ((real32_T)rtNaN);
-      } else if (f0 > 1.0F) {
-        if (u1 > 0.0F) {
-          y = ((real32_T)rtInf);
-        } else {
-          y = 0.0F;
-        }
-      } else if (u1 > 0.0F) {
-        y = 0.0F;
-      } else {
-        y = ((real32_T)rtInf);
-      }
-    } else if (f1 == 0.0F) {
-      y = 1.0F;
-    } else if (f1 == 1.0F) {
-      if (u1 > 0.0F) {
-        y = u0;
-      } else {
-        y = 1.0F / u0;
-      }
-    } else if (u1 == 2.0F) {
-      y = u0 * u0;
-    } else if ((u1 == 0.5F) && (u0 >= 0.0F)) {
-      y = (real32_T)sqrt(u0);
-    } else if ((u0 < 0.0F) && (u1 > ((real32_T)floor(u1)))) {
-      y = ((real32_T)rtNaN);
-    } else {
-      y = (real32_T)pow(u0, u1);
-    }
-  }
-
-  return y;
 }
 
 /*
@@ -1096,9 +1049,9 @@ void getNote(real32_T f, real32_T *noteFreq, real32_T *noteError, char_T
 
   /* 'getNote:3' if isempty(notes) */
   /* 'getNote:6' [~,n] = min(abs(log(notes)-log(f))); */
-  x = (real32_T)log(f);
+  x = logf(f);
   for (ixstart = 0; ixstart < 145; ixstart++) {
-    y[ixstart] = (real32_T)fabs(((real32_T)log(notes[ixstart])) - x);
+    y[ixstart] = fabsf(logf(notes[ixstart]) - x);
   }
 
   ixstart = 1;
@@ -1141,7 +1094,7 @@ void getNote(real32_T f, real32_T *noteFreq, real32_T *noteError, char_T
   } else {
     if ((!rtIsInfF(fdbl)) && (!rtIsNaNF(fdbl))) {
       if ((!rtIsInfF(fdbl)) && (!rtIsNaNF(fdbl))) {
-        fdbl = (real32_T)frexp(fdbl, &eint);
+        fdbl = frexpf(fdbl, &eint);
         x = (real32_T)eint;
       } else {
         x = 0.0F;
@@ -1150,7 +1103,7 @@ void getNote(real32_T f, real32_T *noteFreq, real32_T *noteError, char_T
       if (fdbl == 0.5F) {
         fdbl = x - 1.0F;
       } else {
-        fdbl = (((real32_T)log(fdbl)) / 0.693147182F) + x;
+        fdbl = (logf(fdbl) / 0.693147182F) + x;
       }
     }
   }
@@ -1313,7 +1266,7 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
                       real32_T th, real32_T *F, real32_T *snr, creal32_T w_data
                       [65535], int32_T w_sizes[2])
 {
-  real32_T b_s[8192];
+  static real32_T b_s[8192];
   int32_T gorb;
   int32_T sh_sizes[2];
   static real32_T sh_data[65535];
@@ -1444,7 +1397,7 @@ void measureFreqXcorr(const int32_T s[8192], uint16_T analizeTime, real32_T Fs,
   }
 
   /* 'measureFreqXcorr:43' snr = abs(M); */
-  *snr = (real32_T)fabs(M);
+  *snr = fabsf(M);
 }
 
 /*
@@ -1454,14 +1407,14 @@ void powerMeter(const int32_T signal[8192], uint32_T len, real32_T *dB, real32_T
                 *Lin)
 {
   int32_T tmp_sizes;
-  int32_T tmp_data[8192];
+  static int32_T tmp_data[8192];
   int32_T loop_ub;
   int32_T i4;
   int32_T a_sizes[2];
   static real32_T a_data[65535];
   int32_T y_sizes[2];
   static real32_T y_data[65535];
-  real32_T b_y_data[8192];
+  static real32_T b_y_data[8192];
   real32_T y;
 
   /* 'powerMeter:3' Lin = sqrt(sum((single(signal(1:len)).^2)/single(len))); */
@@ -1485,7 +1438,7 @@ void powerMeter(const int32_T signal[8192], uint32_T len, real32_T *dB, real32_T
 
   eml_scalexp_alloc(a_data, a_sizes, y_data, y_sizes);
   for (tmp_sizes = 0; tmp_sizes <= (y_sizes[1] - 1); tmp_sizes++) {
-    y_data[tmp_sizes] = rt_powf_snf(a_data[tmp_sizes], 2.0F);
+    y_data[tmp_sizes] = powf(a_data[tmp_sizes], 2.0F);
   }
 
   loop_ub = (y_sizes[0] * y_sizes[1]) - 1;
@@ -1502,10 +1455,10 @@ void powerMeter(const int32_T signal[8192], uint32_T len, real32_T *dB, real32_T
     }
   }
 
-  *Lin = (real32_T)sqrt(y);
+  *Lin = sqrtf(y);
 
   /* 'powerMeter:4' dB = 20*log10(Lin); */
-  *dB = 20.0F * ((real32_T)log10(*Lin));
+  *dB = 20.0F * log10f(*Lin);
 }
 
 /* End of code generation (getNote.cpp) */
