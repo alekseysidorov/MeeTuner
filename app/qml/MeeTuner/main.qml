@@ -8,16 +8,15 @@ PageTileWindow {
 
 	property alias analyzer: noteAnalyzer.frequencyAnalyzer
 
-	initialPage: tunerPage
-
     NoteAnalyzer {
         id: noteAnalyzer
+        Component.onCompleted: analyzer.start();
     }
 
 	TunerPage {
 		id: tunerPage
 	}
-	TestPage {
+    DetailsPage {
 		id: testPage
 	}
 	AboutPage {
@@ -28,6 +27,7 @@ PageTileWindow {
 		id: commonTools
 		visible: true
 
+
 		TileRow {
 
 			pageStack: appWindow.pageStack
@@ -35,6 +35,7 @@ PageTileWindow {
 			anchors.fill: parent
             anchors.leftMargin: 12
             anchors.rightMargin: 12
+            anchors.topMargin: 5
 			spacing: 18
 
 			TileIcon {
@@ -58,7 +59,7 @@ PageTileWindow {
 			TileIcon {
 				iconSource: checked ? "images/tile-about-down.png" :
 									  "images/tile-about-up.png"
-				text: qsTr("About")
+                text: qsTr("About")
 				checkable: true
 				page: aboutPage
 				anchors.right: parent.right
@@ -66,4 +67,10 @@ PageTileWindow {
 			}
 		}
 	}
+
+    Connections {
+        target: platformWindow
+        onActiveChanged: platformWindow.active ? analyzer.resume() :
+                                                 analyzer.suspend()
+    }
 }

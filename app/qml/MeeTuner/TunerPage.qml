@@ -13,22 +13,6 @@ Page {
 		text: qsTr("Tuner")
 	}
 
-	Button {
-		id: button
-		anchors.horizontalCenter: parent.horizontalCenter
-		anchors.bottom: parent.bottom
-        anchors.bottomMargin: 15
-
-		text: analyzer.state === FrequencyAnalyzer.ActiveState ? qsTr("Stop") :
-																 qsTr("Start")
-		onClicked: {
-			if (analyzer.state === FrequencyAnalyzer.ActiveState)
-				analyzer.stop();
-			else
-				analyzer.start();
-		}
-	}
-
     TunerSlider {
         id: tuneSlider
 
@@ -51,5 +35,4 @@ Page {
 
 		font.pixelSize: 96
 	}
-
 }

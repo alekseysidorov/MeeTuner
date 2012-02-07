@@ -3,7 +3,7 @@
 
 #include "noteanalyzer.h"
 #include "frequencyanalyzer.h"
-#include "getNote.h"
+#include <getNote.h>
 
 #include <QDebug>
 

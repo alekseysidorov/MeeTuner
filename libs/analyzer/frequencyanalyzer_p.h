@@ -1,7 +1,7 @@
 #ifndef FREQUENCYANALYZER_P_H
 #define FREQUENCYANALYZER_P_H
 #include "frequencyanalyzer.h"
-#include "getNote.h"
+#include <getNote.h>
 
 #include <QAudioDeviceInfo>
 #include <QAudioInput>

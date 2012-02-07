@@ -1,1 +1,0 @@
-include(measureFreqXcorr/measureFreqXcorr.pri)

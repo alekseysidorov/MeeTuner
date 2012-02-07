@@ -89,7 +89,7 @@ void FrequencyAnalyzer::suspend()
 void FrequencyAnalyzer::resume()
 {
     Q_D(FrequencyAnalyzer);
-    if (d->input->state() == QAudio::IdleState)
+    if (d->input->state() == QAudio::SuspendedState)
         d->input->resume();
 }
 
