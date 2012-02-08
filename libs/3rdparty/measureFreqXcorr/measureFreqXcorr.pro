@@ -19,3 +19,8 @@ HEADERS += getNote.h \
            rtGetNaN.h \
            rtwtypes.h
 SOURCES += getNote.cpp rt_nonfinite.cpp rtGetInf.cpp rtGetNaN.cpp
+
+contains(MEEGO_EDITION,harmattan) {
+    target.path = /opt/measureFreqXcorr/lib
+    INSTALLS += target
+}

@@ -2,6 +2,7 @@ import "components"
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import org.meetuner 1.0
+import QtMobility.systeminfo 1.1
 
 PageTileWindow {
 	id: appWindow
@@ -67,6 +68,11 @@ PageTileWindow {
 			}
 		}
 	}
+
+    ScreenSaver {
+        id: saver
+        screenSaverDelayed: analyzer.state === FrequencyAnalyzer.ActiveState
+    }
 
     Connections {
         target: platformWindow
