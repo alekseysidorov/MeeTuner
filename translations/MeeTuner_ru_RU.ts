@@ -19,32 +19,32 @@
     <message>
         <location filename="../app/qml/MeeTuner/DetailsPage.qml" line="17"/>
         <source>Debug frequency analyzer</source>
-        <translation type="unfinished"></translation>
+        <translation>Отладка анализатора частоты</translation>
     </message>
     <message>
         <location filename="../app/qml/MeeTuner/DetailsPage.qml" line="31"/>
         <source>Frequency:</source>
-        <translation type="unfinished"></translation>
+        <translation>Частота:</translation>
     </message>
     <message>
         <location filename="../app/qml/MeeTuner/DetailsPage.qml" line="35"/>
         <source>Nearest note:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ближайшая нота:</translation>
     </message>
     <message>
         <location filename="../app/qml/MeeTuner/DetailsPage.qml" line="39"/>
         <source>Deviation:</source>
-        <translation type="unfinished"></translation>
+        <translation>Отклонение:</translation>
     </message>
     <message>
         <location filename="../app/qml/MeeTuner/DetailsPage.qml" line="43"/>
         <source>Octave:</source>
-        <translation type="unfinished"></translation>
+        <translation>Октава:</translation>
     </message>
     <message>
         <location filename="../app/qml/MeeTuner/DetailsPage.qml" line="47"/>
         <source>Threshold:</source>
-        <translation type="unfinished"></translation>
+        <translation>Порог:</translation>
     </message>
 </context>
 <context>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../app/qml/MeeTuner/TunerPage.qml" line="13"/>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>Тюнер</translation>
     </message>
 </context>
 <context>
