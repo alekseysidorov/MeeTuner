@@ -21,6 +21,6 @@ HEADERS += getNote.h \
 SOURCES += getNote.cpp rt_nonfinite.cpp rtGetInf.cpp rtGetNaN.cpp
 
 contains(MEEGO_EDITION,harmattan) {
-    target.path = /opt/measureFreqXcorr/lib
+    target.path = /opt/meetuner/lib
     INSTALLS += target
 }

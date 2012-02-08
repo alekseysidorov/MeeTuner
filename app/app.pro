@@ -1,13 +1,13 @@
 TEMPLATE = app
-TARGET = MeeTuner
+TARGET = meetuner
 
 # Add more folders to ship with the application, here
 folder_01.source = qml/MeeTuner
-folder_01.target = qml
+folder_01.target = share/qml
 DEPLOYMENTFOLDERS = folder_01
 
 # Additional import path used to resolve QML modules in Creator's code model
-QML_IMPORT_PATH =
+#QML_IMPORT_PATH =
 
 symbian:TARGET.UID3 = 0xE4436BD8
 
@@ -57,4 +57,3 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libs/3rdparty/measu
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libs/3rdparty/measureFreqXcorr/debug/ -lmeasureFreqXcorr
 else:symbian: LIBS += -lmeasureFreqXcorr
 else:unix: LIBS += -L$$OUT_PWD/../libs/3rdparty/measureFreqXcorr/ -lmeasureFreqXcorr
-

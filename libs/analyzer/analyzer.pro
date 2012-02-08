@@ -5,7 +5,7 @@
 TEMPLATE = lib
 TARGET = analyzer
 
-#CONFIG += static
+CONFIG += static
 
 # If your application uses the Qt Mobility libraries, uncomment the following
 # lines and add the respective components to the MOBILITY variable.
@@ -31,6 +31,6 @@ INCLUDEPATH += $$PWD/../3rdparty/measureFreqXcorr
 DEPENDPATH += $$PWD/../3rdparty/measureFreqXcorr
 
 contains(MEEGO_EDITION,harmattan) {
-    target.path = /opt/analyzer/lib
+    target.path = /opt/meetuner/lib
     INSTALLS += target
 }
