@@ -23,7 +23,7 @@ Page {
         anchors.left: header.left
         anchors.right: header.right
         anchors.bottom: header.bottom
-        anchors.topMargin: header.height
+        anchors.topMargin: header.__bottomSpacing
 
         spacing: __fontSize
 

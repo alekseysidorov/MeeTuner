@@ -17,9 +17,9 @@ Page {
         id: tuneSlider
 
         anchors.top: header.bottom
-        anchors.topMargin: 24
         anchors.left: header.left
         anchors.right: header.right
+        anchors.topMargin: header.__bottomSpacing
     }
 
 	Label {

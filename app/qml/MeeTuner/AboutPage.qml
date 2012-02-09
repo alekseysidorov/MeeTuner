@@ -16,9 +16,9 @@ Page {
         spacing: 14
 
         anchors.top: header.bottom
-        anchors.topMargin: header.height
         anchors.right: header.right
         anchors.left: header.left
+        anchors.topMargin: header.__bottomSpacing
 
         Label {
             platformStyle.inverted: true
