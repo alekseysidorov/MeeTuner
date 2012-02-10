@@ -23,11 +23,12 @@ PageTileWindow {
 	AboutPage {
 		id: aboutPage
 	}
+    SettingsPage {
+        id: settingsPage
+    }
 
 	ToolBarLayout {
 		id: commonTools
-		visible: true
-
 
 		TileRow {
 
@@ -69,6 +70,17 @@ PageTileWindow {
 		}
 	}
 
+    ToolBarLayout {
+        id: backTools
+        visible: false
+        ToolIcon {
+            iconId: "toolbar-back"
+            onClicked: {
+                pageStack.pop()
+            }
+        }
+    }
+
     ScreenSaver {
         id: saver
         screenSaverDelayed: analyzer.state === FrequencyAnalyzer.ActiveState
@@ -78,5 +90,9 @@ PageTileWindow {
         target: platformWindow
         onActiveChanged: platformWindow.active ? analyzer.resume() :
                                                  analyzer.suspend()
+    }
+
+    Component.onCompleted: {
+        theme.inverted = true;
     }
 }

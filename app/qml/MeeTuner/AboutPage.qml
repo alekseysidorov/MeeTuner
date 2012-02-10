@@ -4,7 +4,8 @@ import com.nokia.meego 1.0
 import "components"
 
 Page {
-    id: aboutPage
+    id: aboutPage    
+    tools: backTools
 
     PageHeader {
         id: header
@@ -30,6 +31,4 @@ Page {
             onLinkActivated: Qt.openUrlExternally(link)
         }
     }
-
-    tools: commonTools
 }

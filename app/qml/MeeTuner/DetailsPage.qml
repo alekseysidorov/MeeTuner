@@ -14,7 +14,7 @@ Page {
 
     PageHeader {
         id: header
-        text: qsTr("Debug frequency analyzer")
+        text: qsTr("Details")
     }
 
     Column {

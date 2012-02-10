@@ -4,12 +4,12 @@
 <context>
     <name>AboutPage</name>
     <message>
-        <location filename="../app/qml/MeeTuner/AboutPage.qml" line="11"/>
+        <location filename="../app/qml/MeeTuner/AboutPage.qml" line="12"/>
         <source>About MeeTuner</source>
         <translation>О программе MeeTuner</translation>
     </message>
     <message>
-        <location filename="../app/qml/MeeTuner/AboutPage.qml" line="25"/>
+        <location filename="../app/qml/MeeTuner/AboutPage.qml" line="26"/>
         <source>Aleksey and Maksim Sidorov presents a guitar tuner for MeeGo Harmattan. &lt;br /&gt;This is a pre-alpha software! &lt;br /&gt;Visit our &lt;a href=&quot;https://github.com/gorthauer/MeeTuner&quot;&gt;webpage&lt;/a&gt; for details.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18,8 +18,8 @@
     <name>DetailsPage</name>
     <message>
         <location filename="../app/qml/MeeTuner/DetailsPage.qml" line="17"/>
-        <source>Debug frequency analyzer</source>
-        <translation>Отладка анализатора частоты</translation>
+        <source>Details</source>
+        <translation type="unfinished">Подробности</translation>
     </message>
     <message>
         <location filename="../app/qml/MeeTuner/DetailsPage.qml" line="31"/>
@@ -56,6 +56,14 @@
     </message>
 </context>
 <context>
+    <name>SettingsPage</name>
+    <message>
+        <location filename="../app/qml/MeeTuner/SettingsPage.qml" line="13"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TunerPage</name>
     <message>
         <location filename="../app/qml/MeeTuner/TunerPage.qml" line="13"/>
@@ -66,17 +74,17 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../app/qml/MeeTuner/main.qml" line="46"/>
+        <location filename="../app/qml/MeeTuner/main.qml" line="47"/>
         <source>Guitar Tuner</source>
         <translation>Гитарный тюнер</translation>
     </message>
     <message>
-        <location filename="../app/qml/MeeTuner/main.qml" line="56"/>
+        <location filename="../app/qml/MeeTuner/main.qml" line="57"/>
         <source>Details</source>
         <translation>Подробности</translation>
     </message>
     <message>
-        <location filename="../app/qml/MeeTuner/main.qml" line="63"/>
+        <location filename="../app/qml/MeeTuner/main.qml" line="64"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
