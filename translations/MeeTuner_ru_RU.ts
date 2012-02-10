@@ -42,7 +42,7 @@
         <translation>Октава:</translation>
     </message>
     <message>
-        <location filename="../app/qml/MeeTuner/DetailsPage.qml" line="47"/>
+        <location filename="../app/qml/MeeTuner/DetailsPage.qml" line="48"/>
         <source>Threshold:</source>
         <translation>Порог:</translation>
     </message>
@@ -58,9 +58,14 @@
 <context>
     <name>SettingsPage</name>
     <message>
-        <location filename="../app/qml/MeeTuner/SettingsPage.qml" line="13"/>
+        <location filename="../app/qml/MeeTuner/SettingsPage.qml" line="15"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/qml/MeeTuner/SettingsPage.qml" line="29"/>
+        <source>Threshold:</source>
+        <translation type="unfinished">Порог:</translation>
     </message>
 </context>
 <context>
@@ -84,7 +89,17 @@
         <translation>Подробности</translation>
     </message>
     <message>
-        <location filename="../app/qml/MeeTuner/main.qml" line="64"/>
+        <location filename="../app/qml/MeeTuner/main.qml" line="68"/>
+        <source>Menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/qml/MeeTuner/main.qml" line="95"/>
+        <source>Preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/qml/MeeTuner/main.qml" line="99"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>

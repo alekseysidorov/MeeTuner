@@ -43,6 +43,7 @@ Page {
             name: qsTr("Octave:")
             value: noteAnalyzer.octave
         }
+
         FormField {
             name: qsTr("Threshold:")
             item: Slider {
